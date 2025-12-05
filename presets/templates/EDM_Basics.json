@@ -1,0 +1,105 @@
+{
+  "name": "EDM Basics",
+  "description": "Perfect starting point for electronic dance music. Includes kick, snare, hi-hats, bass, and lead patterns.",
+  "bpm": 128,
+  "timeSignature": "4/4",
+  "key": "C",
+  "scale": "minor",
+  "tracks": [
+    {
+      "name": "Kick",
+      "type": "audio",
+      "color": "#FF6B6B",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.8,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "kick-boost" },
+          { "type": "Compressor", "preset": "kick-punch" }
+        ]
+      }
+    },
+    {
+      "name": "Snare",
+      "type": "audio",
+      "color": "#4ECDC4",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.75,
+        "pan": 0,
+        "effects": [
+          { "type": "Reverb", "preset": "snare-room" }
+        ]
+      }
+    },
+    {
+      "name": "Hi-Hat",
+      "type": "audio",
+      "color": "#45B7D1",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+      },
+      "mixer": {
+        "volume": 0.6,
+        "pan": 0.2,
+        "effects": [
+          { "type": "EQ", "preset": "hihat-shimmer" }
+        ]
+      }
+    },
+    {
+      "name": "Bass",
+      "type": "midi",
+      "color": "#96CEB4",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 36, "time": 0, "duration": 0.5, "velocity": 100 },
+        { "note": 36, "time": 2, "duration": 0.5, "velocity": 100 }
+      ],
+      "mixer": {
+        "volume": 0.7,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "bass-sub" },
+          { "type": "Compressor", "preset": "bass-glue" }
+        ]
+      }
+    },
+    {
+      "name": "Lead",
+      "type": "midi",
+      "color": "#FFEAA7",
+      "instrument": "WavetableSynth",
+      "notes": [
+        { "note": 60, "time": 0, "duration": 0.25, "velocity": 80 },
+        { "note": 63, "time": 0.25, "duration": 0.25, "velocity": 85 },
+        { "note": 67, "time": 0.5, "duration": 0.25, "velocity": 90 },
+        { "note": 70, "time": 0.75, "duration": 0.5, "velocity": 95 }
+      ],
+      "mixer": {
+        "volume": 0.65,
+        "pan": -0.1,
+        "effects": [
+          { "type": "Delay", "preset": "lead-space" },
+          { "type": "Reverb", "preset": "hall" }
+        ]
+      }
+    }
+  ],
+  "masterEffects": [
+    { "type": "EQ", "preset": "mastering-bright" },
+    { "type": "Compressor", "preset": "glue" },
+    { "type": "Limiter", "preset": "loud" }
+  ]
+}

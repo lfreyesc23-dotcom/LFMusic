@@ -1,0 +1,330 @@
+/* 🎨 FRUTILLA STUDIO - DESIGN SYSTEM (FL Studio Inspired) */
+/* ========================================================= */
+
+:root {
+  /* === PRIMARY COLORS (FL Studio Orange Theme) === */
+  --fl-orange-primary: #FF8C42;
+  --fl-orange-hover: #FFA15C;
+  --fl-orange-active: #FF7028;
+  --fl-orange-dim: #CC704A;
+  
+  /* === SECONDARY COLORS === */
+  --fl-blue-accent: #4A90E2;
+  --fl-green-success: #2ECC71;
+  --fl-red-danger: #E74C3C;
+  --fl-yellow-warning: #F39C12;
+  --fl-purple-creative: #9B59B6;
+  
+  /* === DARK THEME (Default) === */
+  --bg-primary: #1E1E1E;
+  --bg-secondary: #2D2D2D;
+  --bg-tertiary: #3C3C3C;
+  --bg-elevated: #404040;
+  --bg-hover: #4A4A4A;
+  
+  /* === LIGHT THEME (Optional) === */
+  --bg-light-primary: #F5F5F5;
+  --bg-light-secondary: #E8E8E8;
+  --bg-light-tertiary: #D3D3D3;
+  
+  /* === TEXT COLORS === */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B3B3B3;
+  --text-tertiary: #808080;
+  --text-disabled: #4D4D4D;
+  
+  /* === BORDERS & DIVIDERS === */
+  --border-subtle: #3C3C3C;
+  --border-normal: #4A4A4A;
+  --border-strong: #5A5A5A;
+  --border-accent: var(--fl-orange-primary);
+  
+  /* === SHADOWS & ELEVATION === */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.6);
+  
+  /* === SPACING (8px Grid System) === */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  /* === TYPOGRAPHY === */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* === BORDER RADIUS === */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+  
+  /* === TRANSITIONS === */
+  --transition-fast: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* === Z-INDEX LAYERS === */
+  --z-dropdown: 1000;
+  --z-modal: 2000;
+  --z-tooltip: 3000;
+  --z-notification: 4000;
+  
+  /* === COMPONENT SPECIFIC === */
+  --track-height: 48px;
+  --track-height-compact: 32px;
+  --toolbar-height: 56px;
+  --transport-height: 64px;
+  --mixer-channel-width: 72px;
+  --piano-roll-key-width: 64px;
+  
+  /* === AUDIO VISUALIZATION === */
+  --waveform-color: var(--fl-orange-primary);
+  --waveform-bg: var(--bg-tertiary);
+  --meter-peak: var(--fl-green-success);
+  --meter-clip: var(--fl-red-danger);
+  --meter-warning: var(--fl-yellow-warning);
+  
+  /* === PATTERN COLORS (FL Studio Style) === */
+  --pattern-color-1: #FF6B6B;
+  --pattern-color-2: #4ECDC4;
+  --pattern-color-3: #45B7D1;
+  --pattern-color-4: #96CEB4;
+  --pattern-color-5: #FFEAA7;
+  --pattern-color-6: #DFE6E9;
+  --pattern-color-7: #A29BFE;
+  --pattern-color-8: #FD79A8;
+  --pattern-color-9: #FDCB6E;
+  --pattern-color-10: #6C5CE7;
+}
+
+/* === LIGHT THEME OVERRIDES === */
+[data-theme="light"] {
+  --bg-primary: var(--bg-light-primary);
+  --bg-secondary: var(--bg-light-secondary);
+  --bg-tertiary: var(--bg-light-tertiary);
+  --bg-elevated: #FFFFFF;
+  --bg-hover: #D8D8D8;
+  
+  --text-primary: #1E1E1E;
+  --text-secondary: #4D4D4D;
+  --text-tertiary: #808080;
+  --text-disabled: #B3B3B3;
+  
+  --border-subtle: #E0E0E0;
+  --border-normal: #CCCCCC;
+  --border-strong: #999999;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* === GLOBAL RESETS === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === SCROLLBARS (FL Studio Style) === */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-elevated);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--bg-secondary);
+}
+
+/* === UTILITY CLASSES === */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+
+.p-xs { padding: var(--space-xs); }
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+
+.m-xs { margin: var(--space-xs); }
+.m-sm { margin: var(--space-sm); }
+.m-md { margin: var(--space-md); }
+.m-lg { margin: var(--space-lg); }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-md { font-size: var(--font-size-md); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-accent { color: var(--fl-orange-primary); }
+
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.bg-elevated { background-color: var(--bg-elevated); }
+
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+.transition-fast { transition: all var(--transition-fast); }
+.transition-normal { transition: all var(--transition-normal); }
+.transition-slow { transition: all var(--transition-slow); }
+
+.cursor-pointer { cursor: pointer; }
+.cursor-grab { cursor: grab; }
+.cursor-grabbing { cursor: grabbing; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.pointer-events-none { pointer-events: none; }
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in { animation: fadeIn var(--transition-normal); }
+.animate-slide-in-up { animation: slideInUp var(--transition-normal); }
+.animate-slide-in-down { animation: slideInDown var(--transition-normal); }
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* === FOCUS STYLES === */
+:focus-visible {
+  outline: 2px solid var(--fl-orange-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--fl-orange-primary);
+  outline-offset: 2px;
+}

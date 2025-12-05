@@ -1,0 +1,144 @@
+{
+  "name": "Trap Banger",
+  "description": "Modern trap template with hard-hitting 808s, crisp hi-hats, and atmospheric pads.",
+  "bpm": 140,
+  "timeSignature": "4/4",
+  "key": "F#",
+  "scale": "minor",
+  "tracks": [
+    {
+      "name": "808 Sub",
+      "type": "midi",
+      "color": "#FF6B6B",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 30, "time": 0, "duration": 0.5, "velocity": 100 },
+        { "note": 30, "time": 1, "duration": 1.5, "velocity": 100 },
+        { "note": 33, "time": 3, "duration": 0.5, "velocity": 95 }
+      ],
+      "mixer": {
+        "volume": 0.9,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "808-sub-heavy" },
+          { "type": "Compressor", "preset": "808-smash" },
+          { "type": "Distortion", "preset": "808-overdrive" }
+        ]
+      }
+    },
+    {
+      "name": "Kick",
+      "type": "audio",
+      "color": "#E74C3C",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.8,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "kick-punchy" }
+        ]
+      }
+    },
+    {
+      "name": "Snare",
+      "type": "audio",
+      "color": "#4ECDC4",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.75,
+        "pan": 0,
+        "effects": [
+          { "type": "Reverb", "preset": "snare-big" },
+          { "type": "EQ", "preset": "snare-crack" }
+        ]
+      }
+    },
+    {
+      "name": "Hi-Hat Rolls",
+      "type": "audio",
+      "color": "#45B7D1",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 32,
+        "steps": [1,0,0,1,1,0,1,0,1,0,0,1,1,1,1,1, 1,0,0,1,1,0,1,0,1,1,1,1,1,1,1,1]
+      },
+      "mixer": {
+        "volume": 0.65,
+        "pan": 0.25,
+        "effects": [
+          { "type": "EQ", "preset": "hihat-bright" },
+          { "type": "Delay", "preset": "trap-triplets" }
+        ]
+      }
+    },
+    {
+      "name": "Open Hat",
+      "type": "audio",
+      "color": "#96CEB4",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0]
+      },
+      "mixer": {
+        "volume": 0.5,
+        "pan": -0.25,
+        "effects": [
+          { "type": "Reverb", "preset": "short" }
+        ]
+      }
+    },
+    {
+      "name": "Pad",
+      "type": "midi",
+      "color": "#A29BFE",
+      "instrument": "WavetableSynth",
+      "notes": [
+        { "note": 54, "time": 0, "duration": 4, "velocity": 50 },
+        { "note": 58, "time": 0, "duration": 4, "velocity": 45 },
+        { "note": 61, "time": 0, "duration": 4, "velocity": 40 }
+      ],
+      "mixer": {
+        "volume": 0.4,
+        "pan": 0,
+        "effects": [
+          { "type": "Reverb", "preset": "huge-hall" },
+          { "type": "Chorus", "preset": "wide" },
+          { "type": "EQ", "preset": "pad-dark" }
+        ]
+      }
+    },
+    {
+      "name": "Lead",
+      "type": "midi",
+      "color": "#FDCB6E",
+      "instrument": "FMSynth",
+      "notes": [
+        { "note": 66, "time": 0, "duration": 0.25, "velocity": 80 },
+        { "note": 69, "time": 0.5, "duration": 0.25, "velocity": 85 },
+        { "note": 73, "time": 1, "duration": 0.5, "velocity": 90 }
+      ],
+      "mixer": {
+        "volume": 0.65,
+        "pan": -0.15,
+        "effects": [
+          { "type": "Delay", "preset": "trap-bounce" },
+          { "type": "Reverb", "preset": "ambient" }
+        ]
+      }
+    }
+  ],
+  "masterEffects": [
+    { "type": "EQ", "preset": "trap-bright" },
+    { "type": "Compressor", "preset": "hard-hitting" },
+    { "type": "Limiter", "preset": "maximum" }
+  ]
+}

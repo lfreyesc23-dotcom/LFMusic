@@ -1,0 +1,131 @@
+{
+  "name": "Rock Band",
+  "description": "Full rock band template with drums, bass, rhythm and lead guitars.",
+  "bpm": 120,
+  "timeSignature": "4/4",
+  "key": "E",
+  "scale": "minor",
+  "tracks": [
+    {
+      "name": "Kick",
+      "type": "audio",
+      "color": "#FF6B6B",
+      "instrument": "DrumMachine",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.85,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "kick-rock" },
+          { "type": "Compressor", "preset": "drums-punch" }
+        ]
+      }
+    },
+    {
+      "name": "Snare",
+      "type": "audio",
+      "color": "#4ECDC4",
+      "instrument": "DrumMachine",
+      "pattern": {
+        "length": 16,
+        "steps": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.8,
+        "pan": 0,
+        "effects": [
+          { "type": "Gate", "preset": "tight" },
+          { "type": "Reverb", "preset": "snare-live" }
+        ]
+      }
+    },
+    {
+      "name": "Hi-Hat",
+      "type": "audio",
+      "color": "#45B7D1",
+      "instrument": "DrumMachine",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+      },
+      "mixer": {
+        "volume": 0.55,
+        "pan": 0.15,
+        "effects": [
+          { "type": "EQ", "preset": "hihat-rock" }
+        ]
+      }
+    },
+    {
+      "name": "Bass Guitar",
+      "type": "midi",
+      "color": "#96CEB4",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 40, "time": 0, "duration": 0.5, "velocity": 90 },
+        { "note": 40, "time": 0.5, "duration": 0.5, "velocity": 85 },
+        { "note": 40, "time": 1, "duration": 0.5, "velocity": 90 },
+        { "note": 43, "time": 2, "duration": 0.5, "velocity": 88 },
+        { "note": 43, "time": 2.5, "duration": 0.5, "velocity": 85 }
+      ],
+      "mixer": {
+        "volume": 0.75,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "bass-guitar" },
+          { "type": "Compressor", "preset": "bass-rock" },
+          { "type": "Distortion", "preset": "bass-grit" }
+        ]
+      }
+    },
+    {
+      "name": "Rhythm Guitar",
+      "type": "midi",
+      "color": "#FFEAA7",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 52, "time": 0, "duration": 0.25, "velocity": 80 },
+        { "note": 55, "time": 0, "duration": 0.25, "velocity": 75 },
+        { "note": 59, "time": 0, "duration": 0.25, "velocity": 78 }
+      ],
+      "mixer": {
+        "volume": 0.65,
+        "pan": -0.3,
+        "effects": [
+          { "type": "Distortion", "preset": "guitar-crunch" },
+          { "type": "EQ", "preset": "rhythm-guitar" },
+          { "type": "Delay", "preset": "guitar-slap" }
+        ]
+      }
+    },
+    {
+      "name": "Lead Guitar",
+      "type": "midi",
+      "color": "#FD79A8",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 64, "time": 0, "duration": 0.5, "velocity": 95 },
+        { "note": 67, "time": 0.5, "duration": 0.5, "velocity": 90 },
+        { "note": 71, "time": 1, "duration": 1, "velocity": 100 }
+      ],
+      "mixer": {
+        "volume": 0.7,
+        "pan": 0.3,
+        "effects": [
+          { "type": "Distortion", "preset": "lead-overdrive" },
+          { "type": "EQ", "preset": "lead-guitar" },
+          { "type": "Delay", "preset": "lead-echo" },
+          { "type": "Reverb", "preset": "stage" }
+        ]
+      }
+    }
+  ],
+  "masterEffects": [
+    { "type": "EQ", "preset": "rock-master" },
+    { "type": "Compressor", "preset": "rock-glue" },
+    { "type": "Limiter", "preset": "rock-loud" }
+  ]
+}

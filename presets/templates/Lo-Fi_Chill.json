@@ -1,0 +1,136 @@
+{
+  "name": "Lo-Fi Chill",
+  "description": "Relaxing lo-fi hip hop template with dusty drums, warm rhodes, and vinyl crackle.",
+  "bpm": 85,
+  "timeSignature": "4/4",
+  "key": "D",
+  "scale": "major",
+  "tracks": [
+    {
+      "name": "Kick",
+      "type": "audio",
+      "color": "#FF6B6B",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.7,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "kick-soft" },
+          { "type": "Compressor", "preset": "vintage" }
+        ]
+      }
+    },
+    {
+      "name": "Snare",
+      "type": "audio",
+      "color": "#4ECDC4",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+      },
+      "mixer": {
+        "volume": 0.65,
+        "pan": 0,
+        "effects": [
+          { "type": "Reverb", "preset": "room-vintage" },
+          { "type": "EQ", "preset": "snare-dusty" }
+        ]
+      }
+    },
+    {
+      "name": "Hi-Hat",
+      "type": "audio",
+      "color": "#45B7D1",
+      "instrument": "ProSampler",
+      "pattern": {
+        "length": 16,
+        "steps": [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+      },
+      "mixer": {
+        "volume": 0.45,
+        "pan": 0.1,
+        "effects": [
+          { "type": "EQ", "preset": "hihat-warm" }
+        ]
+      }
+    },
+    {
+      "name": "Rhodes",
+      "type": "midi",
+      "color": "#FFEAA7",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 62, "time": 0, "duration": 1, "velocity": 60 },
+        { "note": 66, "time": 0, "duration": 1, "velocity": 55 },
+        { "note": 69, "time": 1.5, "duration": 0.5, "velocity": 58 },
+        { "note": 62, "time": 2, "duration": 1, "velocity": 60 },
+        { "note": 69, "time": 3, "duration": 1, "velocity": 57 }
+      ],
+      "mixer": {
+        "volume": 0.6,
+        "pan": -0.1,
+        "effects": [
+          { "type": "Chorus", "preset": "vintage" },
+          { "type": "Reverb", "preset": "lofi-room" },
+          { "type": "EQ", "preset": "rhodes-warm" }
+        ]
+      }
+    },
+    {
+      "name": "Bass",
+      "type": "midi",
+      "color": "#96CEB4",
+      "instrument": "ProSynth",
+      "notes": [
+        { "note": 38, "time": 0, "duration": 2, "velocity": 70 },
+        { "note": 43, "time": 2, "duration": 1, "velocity": 68 },
+        { "note": 41, "time": 3, "duration": 1, "velocity": 65 }
+      ],
+      "mixer": {
+        "volume": 0.65,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "bass-lofi" },
+          { "type": "Compressor", "preset": "bass-smooth" }
+        ]
+      }
+    },
+    {
+      "name": "Vinyl Crackle",
+      "type": "audio",
+      "color": "#DFE6E9",
+      "instrument": "ProSampler",
+      "mixer": {
+        "volume": 0.25,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "vinyl-character" }
+        ]
+      }
+    },
+    {
+      "name": "Rain Ambience",
+      "type": "audio",
+      "color": "#A29BFE",
+      "instrument": "ProSampler",
+      "mixer": {
+        "volume": 0.2,
+        "pan": 0,
+        "effects": [
+          { "type": "EQ", "preset": "ambient-dark" },
+          { "type": "Reverb", "preset": "huge" }
+        ]
+      }
+    }
+  ],
+  "masterEffects": [
+    { "type": "EQ", "preset": "lofi-warmth" },
+    { "type": "Compressor", "preset": "vintage-glue" },
+    { "type": "Limiter", "preset": "soft" }
+  ]
+}
