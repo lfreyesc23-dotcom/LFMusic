@@ -1,22 +1,60 @@
 # 🍓 FRUTILLA STUDIO - Professional Music Production
 
 > **Cross-platform music production app with autotune, recording, beats library, and AI vocal enhancement**
+> **NOW WITH FL STUDIO-STYLE WORKFLOW! 🎉**
 
 [![Electron](https://img.shields.io/badge/Electron-28-blue.svg)](https://www.electronjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20-green.svg)](https://nodejs.org/)
-[![C++23](https://img.shields.io/badge/C++-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
+[![C++20](https://img.shields.io/badge/C++-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
 [![JUCE](https://img.shields.io/badge/JUCE-8-orange.svg)](https://juce.com/)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey.svg)](https://github.com)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
 ## 🎯 Visión del Proyecto
 
-**Frutilla Studio** es una aplicación multiplataforma de producción musical que combina:
+**Frutilla Studio v2.0** es un DAW profesional completo que combina:
 - ✨ **Interfaz moderna** construida con Electron
 - 🎛️ **Motor de audio profesional** (OmegaStudio DAW en C++/JUCE)
+- 🎹 **Workflow de FL Studio** (Patterns, Channel Rack, Piano Roll)
+- 🎨 **Síntesis avanzada** (Wavetable, FM, Sampler)
 - 🤖 **Inteligencia artificial** para mejora vocal y autotune
 - 🎵 **Biblioteca de beats** y herramientas de grabación profesional
+
+---
+
+## 🚀 NUEVAS CARACTERÍSTICAS v2.0 (FL Studio Killer)
+
+### ✅ **Workflow de FL Studio**
+- 🎼 **Pattern/Playlist System** - Patrones reutilizables con cloning
+- 🎛️ **Channel Rack** - 16-step sequencer visual por canal
+- 🎹 **Piano Roll Avanzado** - Scale highlighting, chordize, arpeggiator
+- 🎚️ **Mixer Routing Avanzado** - Sidechain, multi-out, insert drag&drop
+
+### ✅ **Síntesis Profesional**
+- 🌊 **Wavetable Synth** - 2048 samples, 256 frames, unison
+- 📻 **FM Synth** - 6-operator, algoritmos DX7
+- 🎸 **Sampler Avanzado** - Multi-sample, velocity layers
+
+### ✅ **Efectos Creativos**
+- 🌀 **Flanger** - LFO-modulated delay
+- 🔄 **Phaser** - 6-stage allpass filters
+- 🎤 **Chorus** - Multi-voice (hasta 8 voces)
+- 🗣️ **Vocoder** - 16-band carrier/modulator
+- ⚡ **Stutter/Glitch** - Tempo-synced stuttering
+
+### ✅ **Smart Browser**
+- 🔍 **Fuzzy Search** - Búsqueda inteligente
+- 🎵 **BPM/Key Filtering** - Filtros musicales avanzados
+- ⭐ **Favorites & Ratings** - Sistema de favoritos
+- 📁 **Unified Browser** - Todo en un solo lugar
+
+### ✅ **Performance & Export**
+- 💾 **Track Freezing** - Optimización de CPU
+- 🚀 **Smart Disable** - Auto-bypass plugins inactivos
+- 📤 **Stem Export** - Exportar pistas individuales
+- 📊 **CPU Monitoring** - Métricas por plugin
 
 ### 🚀 Características Principales
 

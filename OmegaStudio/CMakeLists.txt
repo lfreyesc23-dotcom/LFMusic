@@ -294,6 +294,26 @@ target_sources(OmegaStudio PRIVATE
     Source/Project/ContentManager.cpp
     # Source/GUI/SampleBrowser.h  # Temporalmente deshabilitado
     # Source/GUI/SampleBrowser.cpp
+    
+    # NEW FL Studio-style Features
+    Source/Sequencer/PlaylistEngine.h
+    Source/Sequencer/PlaylistEngine.cpp
+    Source/Sequencer/ChannelRack.h
+    Source/Sequencer/ChannelRack.cpp
+    Source/Sequencer/PianoRollAdvanced.h
+    
+    # NEW Advanced Instruments
+    Source/Audio/Instruments/WavetableSynth.h
+    Source/Audio/Instruments/FMSynth.h
+    
+    # NEW Creative Effects
+    Source/Audio/DSP/CreativeEffects/ModulationEffects.h
+    
+    # NEW Unified Browser
+    Source/Workflow/UnifiedBrowser.h
+    
+    # NEW Export & Performance
+    Source/Workflow/ExportEngine.h
 )
 
 # ============================================================================
