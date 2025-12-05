@@ -125,10 +125,26 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/Graph/AudioGraph.cpp
     Source/Audio/Graph/AudioNode.h
     Source/Audio/Graph/AudioNode.cpp
+    Source/Audio/Graph/ProcessorNodes.h
+    Source/Audio/Graph/ProcessorNodes.cpp
     
     # DSP
     Source/Audio/DSP/SIMDProcessor.h
     Source/Audio/DSP/SIMDProcessor.cpp
+    Source/Audio/DSP/PitchCorrection.h
+    Source/Audio/DSP/PitchCorrection.cpp
+    
+    # Recording
+    Source/Audio/Recording/AudioRecorder.h
+    Source/Audio/Recording/AudioRecorder.cpp
+    
+    # Sample Library
+    Source/Audio/Library/SampleManager.h
+    Source/Audio/Library/SampleManager.cpp
+    
+    # AI Processing
+    Source/Audio/AI/VocalEnhancer.h
+    Source/Audio/AI/VocalEnhancer.cpp
     
     # Memory Management
     Source/Memory/MemoryPool.h
@@ -140,6 +156,8 @@ target_sources(OmegaStudio PRIVATE
     Source/GUI/MainWindow.cpp
     Source/GUI/MainComponent.h
     Source/GUI/MainComponent.cpp
+    Source/GUI/ProcessorPanels.h
+    Source/GUI/ProcessorPanels.cpp
     
     # Utils
     Source/Utils/Constants.h
