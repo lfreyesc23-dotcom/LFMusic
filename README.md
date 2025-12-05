@@ -1,65 +1,77 @@
-# 🎛️ OMEGA STUDIO - Professional DAW
+# 🍓 FRUTILLA STUDIO - Professional Music Production
 
-> **Next-Generation Digital Audio Workstation** - DAW profesional construido desde cero con C++23 y JUCE
+> **Cross-platform music production app with autotune, recording, beats library, and AI vocal enhancement**
 
+[![Electron](https://img.shields.io/badge/Electron-28-blue.svg)](https://www.electronjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20-green.svg)](https://nodejs.org/)
 [![C++23](https://img.shields.io/badge/C++-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![JUCE](https://img.shields.io/badge/JUCE-8-orange.svg)](https://juce.com/)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey.svg)](https://github.com)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey.svg)](https://github.com)
 
 ---
 
 ## 🎯 Visión del Proyecto
 
-**OmegaStudio** es un DAW profesional diseñado para superar los estándares actuales de la industria (FL Studio, Ableton, etc.) en rendimiento, arquitectura técnica y flujo de trabajo. Construido con principios modernos de programación de audio en tiempo real.
+**Frutilla Studio** es una aplicación multiplataforma de producción musical que combina:
+- ✨ **Interfaz moderna** construida con Electron
+- 🎛️ **Motor de audio profesional** (OmegaStudio DAW en C++/JUCE)
+- 🤖 **Inteligencia artificial** para mejora vocal y autotune
+- 🎵 **Biblioteca de beats** y herramientas de grabación profesional
 
 ### 🚀 Características Principales
 
 #### ✅ **Implementado**
-- **Lock-Free Audio Engine**: Motor de audio 100% libre de bloqueos para garantizar cero dropouts
-- **Real-Time Safe Memory Management**: Pool de memoria pre-asignado (16 MB) para el thread de audio
-- **SIMD-Optimized DSP**: Procesamiento de señales 4-8x más rápido usando AVX2/NEON
-- **Cross-Platform**: Soporte nativo para macOS (Intel/Apple Silicon) y Windows 11
-- **Professional GUI**: Interfaz JUCE con rendering a 60 FPS
-- **Audio Graph Architecture**: Sistema modular de nodos para routing flexible
 
-#### 🚧 **En Desarrollo** (Roadmap)
-- **VST3/AU Plugin Hosting**: Carga de plugins de terceros con compensación automática de latencia
-- **MIDI Sequencer**: Piano roll profesional con quantización y automatización
-- **Multi-Track Mixer**: Mezclador con sends/returns y efectos integrados
-- **Modulation Matrix**: Sistema de modulación universal (cualquier parámetro → cualquier parámetro)
-- **Built-in Effects**: EQ, compresor, reverb, delay profesionales
-- **AI-Powered Features**: Asistente de mezcla inteligente
+**Frontend (Electron)**:
+- 🎤 **Recording Studio**: Interfaz de grabación profesional
+- 🎵 **Autotune & Pitch Correction**: Controles intuitivos para corrección de tono
+- 🥁 **Beats Library**: Navegador de beats con preview
+- 🤖 **AI Vocal Enhancement**: Suite completa de procesamiento vocal
+  - De-Esser inteligente
+  - Breath Control
+  - Vocal Rider automático
+  - Vocal Doubler y Harmonizer
+  - Vocal Comping de múltiples tomas
+- 🎚️ **Mixer Integration**: Conexión con el DAW OmegaStudio
+- ✨ **Effects Suite**: Integración con procesadores profesionales
+
+**Backend (OmegaStudio DAW - C++/JUCE)**:
+- **Lock-Free Audio Engine**: Motor de audio 100% libre de bloqueos
+- **Real-Time Safe Memory Management**: Pool de memoria pre-asignado (16 MB)
+- **SIMD-Optimized DSP**: Procesamiento AVX2/NEON 4-8x más rápido
+- **Vocal Production Suite**:
+  - VocalComping (grabación de múltiples tomas con comp automático)
+  - VocalHarmonizer/Doubler (armonías y doubling natural)
+  - ProDeEsser (detección inteligente de sibilancias)
+  - BreathControl (eliminación de respiraciones)
+  - VocalRider (seguimiento automático de nivel)
+- **Auto-Tune (PitchCorrection)**: Detección YIN con Phase Vocoder
+- **Audio Recorder**: 64 pistas simultáneas
+- **Sample Manager**: Biblioteca con detección de BPM y tonalidad
+- **VST3/AU Plugin Hosting**: Soporte completo de plugins
+- **Project Management**: Save/Load con templates profesionales
 
 ---
 
-## 🏗️ Arquitectura Técnica
-
-### Threading Model (Real-Time Safe)
+## 🏗️ Arquitectura del Sistema
 
 ```
 ┌─────────────────────────────────────────────────┐
-│              GUI THREAD (60 FPS)                │
-│  - Rendering                                    │
-│  - User Input                                   │
-│  - File I/O                                     │
+│        ELECTRON APP (Frontend)                  │
+│  - Modern UI (HTML/CSS/JavaScript)              │
+│  - User Controls & Visualization                │
+│  - File Management                              │
 └───────────────┬─────────────────────────────────┘
-                │ Lock-Free FIFO
+                │ IPC Bridge
                 ↓
 ┌─────────────────────────────────────────────────┐
-│        AUDIO THREAD (Real-Time Priority)        │
-│  - DSP Processing                               │
-│  - Plugin Hosting                               │
-│  - Audio Graph                                  │
-│  - SIMD Operations                              │
+│     OMEGASTUDIO DAW (C++/JUCE Backend)          │
+│  - Real-Time Audio Engine                       │
+│  - SIMD DSP Processing                          │
+│  - VST3/AU Plugin Hosting                       │
+│  - Professional Audio I/O                       │
 └─────────────────────────────────────────────────┘
 ```
-
-### Principios de Diseño
-
-1. **Zero Allocations en Audio Thread**: Pool de memoria pre-asignado
-2. **Lock-Free Communication**: FIFO circular para mensajes GUI ↔ Audio
-3. **SIMD-First**: Procesamiento vectorial (AVX2/NEON) por defecto
-4. **Modular Architecture**: Sistema de nodos desacoplado y extensible
 
 ---
 
@@ -67,6 +79,16 @@
 
 ```
 Frutilla/
+├── package.json              # Configuración Electron
+├── build-mac.sh              # Script de build para macOS
+├── build-win.bat             # Script de build para Windows
+├── src/
+│   ├── main/
+│   │   └── index.js          # Proceso principal Electron
+│   └── renderer/
+│       ├── index.html        # Interfaz de usuario
+│       ├── styles.css        # Estilos modernos
+│       └── app.js            # Lógica de la UI
 ├── OmegaStudio/              # DAW Profesional (C++23)
 │   ├── CMakeLists.txt        # Build system
 │   ├── Source/
@@ -75,10 +97,14 @@ Frutilla/
 │   │   │   ├── Engine/       # Motor de audio RT-safe
 │   │   │   ├── Graph/        # Sistema de nodos
 │   │   │   ├── DSP/          # SIMD processors
-│   │   │   └── Plugins/      # VST3/AU host (futuro)
+│   │   │   ├── Recording/    # Sistema de grabación
+│   │   │   ├── Library/      # Sample Manager
+│   │   │   └── AI/           # Vocal Enhancement AI
 │   │   ├── Memory/           # Pool allocator + FIFO
 │   │   ├── GUI/              # Interfaz JUCE
-│   │   ├── Sequencer/        # MIDI (futuro)
+│   │   ├── Sequencer/        # MIDI sequencer
+│   │   ├── Mixer/            # Mixing engine
+│   │   ├── Project/          # Project management
 │   │   └── Utils/            # Utilidades
 │   ├── README.md
 │   ├── QUICKSTART.md
@@ -96,6 +122,12 @@ Frutilla/
 ```bash
 # Instalar Xcode Command Line Tools
 xcode-select --install
+
+# Instalar Node.js (si no está instalado)
+brew install node
+
+# Instalar CMake
+brew install cmake
 ```
 
 ### Instalación y Compilación
@@ -110,19 +142,75 @@ git clone https://github.com/juce-framework/JUCE.git --branch 8.0.4 --depth 1
 # 3. Compilar con Xcode (macOS Apple Silicon)
 xcodebuild -project Builds/MacOSX/OmegaStudio.xcodeproj -configuration Release -arch arm64
 ```
+```
+
+#### Windows
+```bash
+# Instalar Node.js desde https://nodejs.org/
+# Instalar Visual Studio 2022 Community (con C++ workload)
+# Instalar CMake desde https://cmake.org/
+```
+
+### Instalación y Compilación
+
+**Método Rápido (Recomendado)**:
+
+```bash
+# macOS
+cd Frutilla
+./build-mac.sh
+
+# Windows
+cd Frutilla
+build-win.bat
+```
+
+**Método Manual**:
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/lfreyesc23-dotcom/LFMusic.git Frutilla
+cd Frutilla
+
+# 2. Instalar dependencias de Node.js
+npm install
+
+# 3. Compilar OmegaStudio DAW
+cd OmegaStudio
+git clone https://github.com/juce-framework/JUCE.git --branch 8.0.4 --depth 1
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel 8
+cd ..
+```
 
 ### Ejecución
 
 ```bash
-# macOS
-open Builds/MacOSX/build/Release/OmegaStudio.app
+# Modo desarrollo (con DevTools)
+npm run dev
+
+# Modo producción
+npm start
+
+# O usar la tarea de VS Code: "Run Frutilla Studio"
 ```
 
-**Estado**: ✅ **COMPILANDO Y EJECUTANDO CORRECTAMENTE** (5 Dic 2025)
+**Estado**: ✅ **FUNCIONANDO CORRECTAMENTE** (5 Dic 2025)
 
 ---
 
-## 🎉 CARACTERÍSTICAS IMPLEMENTADAS (Diciembre 2025)
+## 📋 Tareas VS Code Disponibles
+
+Desde VS Code puedes ejecutar estas tareas (Cmd/Ctrl + Shift + B):
+
+1. **Run Frutilla Studio** - Ejecuta la aplicación principal
+2. **Build OmegaStudio DAW** - Compila solo el motor de audio C++
+3. **Clean Build OmegaStudio** - Limpia y recompila desde cero
+4. **Launch OmegaStudio DAW Only** - Abre solo el DAW sin Electron
+
+---
+
+## 🎛️ Características del Motor de Audio (OmegaStudio)
 
 ### ✅ Completamente Implementado
 

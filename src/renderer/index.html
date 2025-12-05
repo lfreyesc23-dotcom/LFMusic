@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frutilla Studio - Professional Music Production</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <h1>🍓 Frutilla Studio</h1>
+        <span class="version">v1.0.0</span>
+      </div>
+      <div class="header-controls">
+        <button id="launchDAW" class="btn-primary">🎛️ Launch DAW</button>
+        <button id="settings" class="btn-secondary">⚙️ Settings</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="nav-menu">
+          <button class="nav-item active" data-view="recording">
+            🎤 Recording
+          </button>
+          <button class="nav-item" data-view="autotune">
+            🎵 Autotune
+          </button>
+          <button class="nav-item" data-view="beats">
+            🥁 Beats Library
+          </button>
+          <button class="nav-item" data-view="ai-vocal">
+            🤖 AI Vocal Enhancement
+          </button>
+          <button class="nav-item" data-view="mixer">
+            🎚️ Mixer
+          </button>
+          <button class="nav-item" data-view="effects">
+            ✨ Effects
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Content Area -->
+      <section class="content-area">
+        <!-- Recording View -->
+        <div id="recording-view" class="view active">
+          <h2>🎤 Recording Studio</h2>
+          
+          <div class="recording-controls">
+            <button id="recordBtn" class="btn-record">
+              <span class="icon">⏺</span>
+              <span>Record</span>
+            </button>
+            <button id="playBtn" class="btn-play">
+              <span class="icon">▶</span>
+              <span>Play</span>
+            </button>
+            <button id="stopBtn" class="btn-stop">
+              <span class="icon">⏹</span>
+              <span>Stop</span>
+            </button>
+          </div>
+
+          <div class="waveform-container">
+            <div id="waveform"></div>
+          </div>
+
+          <div class="recording-info">
+            <div class="info-item">
+              <span class="label">Input Device:</span>
+              <select id="inputDevice">
+                <option>Default Input</option>
+              </select>
+            </div>
+            <div class="info-item">
+              <span class="label">Sample Rate:</span>
+              <span class="value">48000 Hz</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Bit Depth:</span>
+              <span class="value">24-bit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Autotune View -->
+        <div id="autotune-view" class="view">
+          <h2>🎵 Autotune & Pitch Correction</h2>
+          
+          <div class="autotune-panel">
+            <div class="control-group">
+              <label>Correction Amount</label>
+              <input type="range" id="autotuneAmount" min="0" max="100" value="50">
+              <span id="autotuneAmountValue">50%</span>
+            </div>
+
+            <div class="control-group">
+              <label>Key</label>
+              <select id="autotuneKey">
+                <option>C Major</option>
+                <option>D Major</option>
+                <option>E Major</option>
+                <option>F Major</option>
+                <option>G Major</option>
+                <option>A Major</option>
+                <option>B Major</option>
+                <option>C Minor</option>
+                <option>D Minor</option>
+                <option>E Minor</option>
+                <option>F Minor</option>
+                <option>G Minor</option>
+                <option>A Minor</option>
+                <option>B Minor</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Retune Speed (ms)</label>
+              <input type="range" id="retuneSpeed" min="0" max="400" value="100">
+              <span id="retuneSpeedValue">100ms</span>
+            </div>
+
+            <div class="control-group">
+              <label>Humanize</label>
+              <input type="range" id="humanize" min="0" max="100" value="30">
+              <span id="humanizeValue">30%</span>
+            </div>
+
+            <button id="applyAutotune" class="btn-primary">Apply Autotune</button>
+          </div>
+        </div>
+
+        <!-- Beats Library View -->
+        <div id="beats-view" class="view">
+          <h2>🥁 Beats Library</h2>
+          
+          <div class="beats-grid">
+            <div class="beat-card">
+              <div class="beat-icon">🎵</div>
+              <h3>Hip Hop Beat 1</h3>
+              <p>140 BPM</p>
+              <button class="btn-play-beat">▶ Play</button>
+            </div>
+            <div class="beat-card">
+              <div class="beat-icon">🎶</div>
+              <h3>Trap Beat</h3>
+              <p>160 BPM</p>
+              <button class="btn-play-beat">▶ Play</button>
+            </div>
+            <div class="beat-card">
+              <div class="beat-icon">🎼</div>
+              <h3>R&B Groove</h3>
+              <p>90 BPM</p>
+              <button class="btn-play-beat">▶ Play</button>
+            </div>
+            <div class="beat-card">
+              <div class="beat-icon">🎹</div>
+              <h3>Lo-Fi Chill</h3>
+              <p>85 BPM</p>
+              <button class="btn-play-beat">▶ Play</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Vocal Enhancement View -->
+        <div id="ai-vocal-view" class="view">
+          <h2>🤖 AI Vocal Enhancement</h2>
+          
+          <div class="ai-panel">
+            <div class="ai-feature">
+              <h3>🎤 De-Esser</h3>
+              <p>Automatically remove harsh sibilance</p>
+              <button class="btn-apply">Apply</button>
+            </div>
+
+            <div class="ai-feature">
+              <h3>🌬️ Breath Control</h3>
+              <p>Intelligent breath detection and reduction</p>
+              <button class="btn-apply">Apply</button>
+            </div>
+
+            <div class="ai-feature">
+              <h3>🎚️ Vocal Rider</h3>
+              <p>Automatic level riding for consistent vocals</p>
+              <button class="btn-apply">Apply</button>
+            </div>
+
+            <div class="ai-feature">
+              <h3>🎭 Vocal Doubler</h3>
+              <p>Natural vocal doubling and harmonization</p>
+              <button class="btn-apply">Apply</button>
+            </div>
+
+            <div class="ai-feature">
+              <h3>✨ Vocal Comping</h3>
+              <p>Automatic comp from multiple takes</p>
+              <button class="btn-apply">Apply</button>
+            </div>
+
+            <div class="ai-feature">
+              <h3>🎼 Harmony Generator</h3>
+              <p>AI-powered harmony creation</p>
+              <button class="btn-apply">Apply</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mixer View -->
+        <div id="mixer-view" class="view">
+          <h2>🎚️ Mixer</h2>
+          <p class="coming-soon">Integrated with OmegaStudio DAW</p>
+        </div>
+
+        <!-- Effects View -->
+        <div id="effects-view" class="view">
+          <h2>✨ Effects</h2>
+          <p class="coming-soon">Integrated with OmegaStudio DAW</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Status Bar -->
+    <footer class="status-bar">
+      <div class="status-item">
+        <span class="status-label">Status:</span>
+        <span class="status-value" id="statusText">Ready</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">CPU:</span>
+        <span class="status-value" id="cpuUsage">0%</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Buffer:</span>
+        <span class="status-value">512 samples</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
