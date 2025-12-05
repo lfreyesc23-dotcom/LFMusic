@@ -1,0 +1,27 @@
+{
+  "presetName": "Hi-Hat 8ths",
+  "category": "Hi-Hat Patterns",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Standard 8th note hi-hat pattern",
+  "tags": ["hihat", "8th", "closed", "standard"],
+  
+  "steps": 16,
+  "pattern": [
+    {"step": 0, "velocity": 100, "note": "F#1"},
+    {"step": 2, "velocity": 80, "note": "F#1"},
+    {"step": 4, "velocity": 100, "note": "F#1"},
+    {"step": 6, "velocity": 80, "note": "F#1"},
+    {"step": 8, "velocity": 100, "note": "F#1"},
+    {"step": 10, "velocity": 80, "note": "F#1"},
+    {"step": 12, "velocity": 100, "note": "F#1"},
+    {"step": 14, "velocity": 80, "note": "F#1"}
+  ],
+  
+  "channelSettings": {
+    "volume": 0.7,
+    "pan": 0.6,
+    "mute": false,
+    "solo": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "presetName": "Pluck Lead",
+  "category": "Pluck",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Short plucked synth for arpeggios",
+  "tags": ["pluck", "arp", "short", "edm"],
+  
+  "wavetable": {
+    "waveformType": "Triangle",
+    "waveformPosition": 0.0,
+    "morphAmount": 0.0
+  },
+  
+  "unison": {
+    "voices": 4,
+    "detune": 0.08,
+    "spread": 0.5,
+    "blend": 0.8
+  },
+  
+  "filter": {
+    "type": "lowpass",
+    "cutoff": 3500,
+    "resonance": 0.5,
+    "drive": 0.1
+  },
+  
+  "envelope": {
+    "attack": 0.001,
+    "decay": 0.15,
+    "sustain": 0.0,
+    "release": 0.1
+  },
+  
+  "lfo": {
+    "rate": 0.0,
+    "depth": 0.0,
+    "destination": "none"
+  },
+  
+  "output": {
+    "volume": 0.7,
+    "pan": 0.5
+  }
+}

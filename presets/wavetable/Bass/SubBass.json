@@ -1,0 +1,46 @@
+{
+  "presetName": "Sub Bass",
+  "category": "Bass",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Pure sub bass for low end foundation",
+  "tags": ["bass", "sub", "clean", "low"],
+  
+  "wavetable": {
+    "waveformType": "Sine",
+    "waveformPosition": 0.0,
+    "morphAmount": 0.0
+  },
+  
+  "unison": {
+    "voices": 2,
+    "detune": 0.01,
+    "spread": 0.1,
+    "blend": 1.0
+  },
+  
+  "filter": {
+    "type": "lowpass",
+    "cutoff": 200,
+    "resonance": 0.1,
+    "drive": 0.0
+  },
+  
+  "envelope": {
+    "attack": 0.001,
+    "decay": 0.1,
+    "sustain": 1.0,
+    "release": 0.2
+  },
+  
+  "lfo": {
+    "rate": 0.0,
+    "depth": 0.0,
+    "destination": "none"
+  },
+  
+  "output": {
+    "volume": 0.9,
+    "pan": 0.5
+  }
+}

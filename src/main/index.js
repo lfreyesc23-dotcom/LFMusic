@@ -1,14 +1,14 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { spawn } = require('child_process');
+const OmegaStudioBridge = require('./omega-bridge');
 
 let mainWindow;
-let omegaStudioProcess;
+let omegaBridge;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1400,
-    height: 900,
+    width: 1600,
+    height: 1000,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -27,56 +27,57 @@ function createWindow() {
   }
 
   mainWindow.on('closed', () => {
+    if (omegaBridge) {
+      omegaBridge.stopBackend();
+    }
     mainWindow = null;
   });
 }
 
-// Launch OmegaStudio DAW
-function launchOmegaStudio() {
-  const omegaStudioPath = path.join(
-    __dirname,
-    '../../OmegaStudio/build/OmegaStudio_artefacts/Release/Omega Studio.app/Contents/MacOS/Omega Studio'
-  );
-
-  try {
-    omegaStudioProcess = spawn(omegaStudioPath, [], {
-      detached: true,
-      stdio: 'ignore'
-    });
-
-    omegaStudioProcess.unref();
-    console.log('✅ OmegaStudio DAW launched');
-  } catch (error) {
-    console.error('❌ Failed to launch OmegaStudio:', error);
-  }
+// Initialize Omega Studio Bridge
+function initializeOmegaBridge() {
+  omegaBridge = new OmegaStudioBridge();
+  console.log('✅ OmegaStudio Bridge initialized');
+  
+  // Start backend (optional - can work standalone with mock data)
+  // omegaBridge.startBackend();
 }
 
-// IPC handlers
+// IPC handlers for legacy compatibility
 ipcMain.handle('launch-omega-studio', async () => {
-  launchOmegaStudio();
+  if (omegaBridge) {
+    omegaBridge.startBackend();
+  }
   return { success: true };
 });
 
 ipcMain.handle('get-audio-devices', async () => {
-  // This will communicate with OmegaStudio's audio engine
-  return {
-    inputs: [],
-    outputs: []
-  };
+  // Use bridge to get audio devices
+  if (omegaBridge) {
+    return await omegaBridge.sendCommand('getAudioDevices', {});
+  }
+  return { inputs: [], outputs: [] };
 });
 
 ipcMain.handle('start-recording', async () => {
-  // Bridge to OmegaStudio recording
+  // Bridge to recording functionality
+  if (omegaBridge) {
+    return await omegaBridge.sendCommand('startRecording', {});
+  }
   return { success: true };
 });
 
 ipcMain.handle('apply-autotune', async (event, params) => {
-  // Bridge to OmegaStudio autotune/pitch correction
+  // Bridge to autotune/pitch correction
+  if (omegaBridge) {
+    return await omegaBridge.sendCommand('applyAutotune', params);
+  }
   return { success: true, params };
 });
 
 // App lifecycle
 app.whenReady().then(() => {
+  initializeOmegaBridge();
   createWindow();
 
   app.on('activate', () => {
@@ -87,8 +88,8 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-  if (omegaStudioProcess) {
-    omegaStudioProcess.kill();
+  if (omegaBridge) {
+    omegaBridge.stopBackend();
   }
   
   if (process.platform !== 'darwin') {
@@ -97,7 +98,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('quit', () => {
-  if (omegaStudioProcess) {
-    omegaStudioProcess.kill();
+  if (omegaBridge) {
+    omegaBridge.stopBackend();
   }
 });

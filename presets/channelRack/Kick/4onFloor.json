@@ -1,0 +1,23 @@
+{
+  "presetName": "4-on-Floor",
+  "category": "Kick Patterns",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Classic house/techno kick pattern - 4 quarter notes",
+  "tags": ["kick", "house", "techno", "4x4"],
+  
+  "steps": 16,
+  "pattern": [
+    {"step": 0, "velocity": 127, "note": "C1"},
+    {"step": 4, "velocity": 127, "note": "C1"},
+    {"step": 8, "velocity": 127, "note": "C1"},
+    {"step": 12, "velocity": 127, "note": "C1"}
+  ],
+  
+  "channelSettings": {
+    "volume": 0.9,
+    "pan": 0.5,
+    "mute": false,
+    "solo": false
+  }
+}

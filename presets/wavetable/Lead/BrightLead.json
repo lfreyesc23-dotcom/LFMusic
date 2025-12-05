@@ -1,0 +1,46 @@
+{
+  "presetName": "Bright Lead",
+  "category": "Lead",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Cutting lead synth for melodies",
+  "tags": ["lead", "bright", "melody", "edm"],
+  
+  "wavetable": {
+    "waveformType": "Saw",
+    "waveformPosition": 0.3,
+    "morphAmount": 0.4
+  },
+  
+  "unison": {
+    "voices": 6,
+    "detune": 0.10,
+    "spread": 0.65,
+    "blend": 0.9
+  },
+  
+  "filter": {
+    "type": "bandpass",
+    "cutoff": 2000,
+    "resonance": 0.4,
+    "drive": 0.2
+  },
+  
+  "envelope": {
+    "attack": 0.05,
+    "decay": 0.2,
+    "sustain": 0.7,
+    "release": 0.3
+  },
+  
+  "lfo": {
+    "rate": 4.0,
+    "depth": 0.3,
+    "destination": "cutoff"
+  },
+  
+  "output": {
+    "volume": 0.75,
+    "pan": 0.5
+  }
+}

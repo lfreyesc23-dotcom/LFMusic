@@ -1,0 +1,90 @@
+{
+  "presetName": "Bell",
+  "category": "Percussive",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Metallic bell with long decay",
+  "tags": ["bell", "metallic", "percussion", "long"],
+  
+  "algorithm": "DX7-32",
+  
+  "operators": [
+    {
+      "id": 1,
+      "ratio": 1.0,
+      "level": 0.9,
+      "feedback": 0.2,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 2.0,
+        "sustain": 0.3,
+        "release": 3.0
+      }
+    },
+    {
+      "id": 2,
+      "ratio": 3.5,
+      "level": 0.6,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 1.8,
+        "sustain": 0.2,
+        "release": 2.8
+      }
+    },
+    {
+      "id": 3,
+      "ratio": 7.1,
+      "level": 0.4,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 1.5,
+        "sustain": 0.1,
+        "release": 2.5
+      }
+    },
+    {
+      "id": 4,
+      "ratio": 11.0,
+      "level": 0.3,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 1.2,
+        "sustain": 0.05,
+        "release": 2.2
+      }
+    },
+    {
+      "id": 5,
+      "ratio": 14.3,
+      "level": 0.2,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 1.0,
+        "sustain": 0.02,
+        "release": 2.0
+      }
+    },
+    {
+      "id": 6,
+      "ratio": 1.0,
+      "level": 0.1,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 0.8,
+        "sustain": 0.0,
+        "release": 1.5
+      }
+    }
+  ],
+  
+  "output": {
+    "volume": 0.8,
+    "pan": 0.5
+  }
+}

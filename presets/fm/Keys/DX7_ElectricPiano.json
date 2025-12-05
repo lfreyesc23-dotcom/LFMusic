@@ -1,0 +1,90 @@
+{
+  "presetName": "DX7 Electric Piano",
+  "category": "Keys",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Classic DX7 electric piano sound",
+  "tags": ["epiano", "dx7", "keys", "classic"],
+  
+  "algorithm": "DX7-1",
+  
+  "operators": [
+    {
+      "id": 1,
+      "ratio": 1.0,
+      "level": 0.9,
+      "feedback": 0.3,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 0.5,
+        "sustain": 0.6,
+        "release": 0.8
+      }
+    },
+    {
+      "id": 2,
+      "ratio": 14.0,
+      "level": 0.7,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 0.3,
+        "sustain": 0.0,
+        "release": 0.3
+      }
+    },
+    {
+      "id": 3,
+      "ratio": 1.0,
+      "level": 0.3,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.001,
+        "decay": 0.4,
+        "sustain": 0.4,
+        "release": 0.6
+      }
+    },
+    {
+      "id": 4,
+      "ratio": 1.0,
+      "level": 0.2,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.01,
+        "decay": 0.5,
+        "sustain": 0.3,
+        "release": 0.7
+      }
+    },
+    {
+      "id": 5,
+      "ratio": 1.0,
+      "level": 0.1,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.02,
+        "decay": 0.6,
+        "sustain": 0.2,
+        "release": 0.8
+      }
+    },
+    {
+      "id": 6,
+      "ratio": 1.0,
+      "level": 0.1,
+      "feedback": 0.0,
+      "envelope": {
+        "attack": 0.03,
+        "decay": 0.7,
+        "sustain": 0.1,
+        "release": 0.9
+      }
+    }
+  ],
+  
+  "output": {
+    "volume": 0.8,
+    "pan": 0.5
+  }
+}

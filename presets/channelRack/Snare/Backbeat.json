@@ -1,0 +1,21 @@
+{
+  "presetName": "Backbeat",
+  "category": "Snare Patterns",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Classic backbeat - snare on 2 and 4",
+  "tags": ["snare", "backbeat", "rock", "pop"],
+  
+  "steps": 16,
+  "pattern": [
+    {"step": 4, "velocity": 120, "note": "D1"},
+    {"step": 12, "velocity": 120, "note": "D1"}
+  ],
+  
+  "channelSettings": {
+    "volume": 0.85,
+    "pan": 0.5,
+    "mute": false,
+    "solo": false
+  }
+}

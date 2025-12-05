@@ -1,0 +1,46 @@
+{
+  "presetName": "Massive Bass",
+  "category": "Bass",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Aggressive wavetable bass with heavy unison",
+  "tags": ["bass", "edm", "aggressive", "sub"],
+  
+  "wavetable": {
+    "waveformType": "Square",
+    "waveformPosition": 0.0,
+    "morphAmount": 0.0
+  },
+  
+  "unison": {
+    "voices": 8,
+    "detune": 0.25,
+    "spread": 0.85,
+    "blend": 1.0
+  },
+  
+  "filter": {
+    "type": "lowpass",
+    "cutoff": 600,
+    "resonance": 0.7,
+    "drive": 0.3
+  },
+  
+  "envelope": {
+    "attack": 0.01,
+    "decay": 0.3,
+    "sustain": 0.6,
+    "release": 0.5
+  },
+  
+  "lfo": {
+    "rate": 0.5,
+    "depth": 0.0,
+    "destination": "cutoff"
+  },
+  
+  "output": {
+    "volume": 0.8,
+    "pan": 0.5
+  }
+}

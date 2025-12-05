@@ -1,0 +1,46 @@
+{
+  "presetName": "Lush Pad",
+  "category": "Pad",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Warm atmospheric pad with wide stereo image",
+  "tags": ["pad", "ambient", "lush", "wide"],
+  
+  "wavetable": {
+    "waveformType": "Sine",
+    "waveformPosition": 0.7,
+    "morphAmount": 0.6
+  },
+  
+  "unison": {
+    "voices": 16,
+    "detune": 0.05,
+    "spread": 0.95,
+    "blend": 1.0
+  },
+  
+  "filter": {
+    "type": "lowpass",
+    "cutoff": 1500,
+    "resonance": 0.3,
+    "drive": 0.0
+  },
+  
+  "envelope": {
+    "attack": 0.5,
+    "decay": 0.8,
+    "sustain": 0.8,
+    "release": 2.0
+  },
+  
+  "lfo": {
+    "rate": 0.2,
+    "depth": 0.2,
+    "destination": "cutoff"
+  },
+  
+  "output": {
+    "volume": 0.65,
+    "pan": 0.5
+  }
+}

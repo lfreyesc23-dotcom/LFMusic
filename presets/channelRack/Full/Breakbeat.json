@@ -1,0 +1,47 @@
+{
+  "presetName": "Breakbeat",
+  "category": "Full Patterns",
+  "author": "Frutilla Studio",
+  "version": "1.0",
+  "description": "Classic breakbeat/amen break inspired pattern",
+  "tags": ["breakbeat", "dnb", "amen", "syncopated"],
+  
+  "steps": 16,
+  "channels": [
+    {
+      "name": "Kick",
+      "pattern": [
+        {"step": 0, "velocity": 127, "note": "C1"},
+        {"step": 6, "velocity": 110, "note": "C1"},
+        {"step": 10, "velocity": 100, "note": "C1"}
+      ]
+    },
+    {
+      "name": "Snare",
+      "pattern": [
+        {"step": 4, "velocity": 120, "note": "D1"},
+        {"step": 7, "velocity": 90, "note": "D1"},
+        {"step": 12, "velocity": 120, "note": "D1"},
+        {"step": 14, "velocity": 100, "note": "D1"}
+      ]
+    },
+    {
+      "name": "Hi-Hat",
+      "pattern": [
+        {"step": 0, "velocity": 100, "note": "F#1"},
+        {"step": 2, "velocity": 70, "note": "F#1"},
+        {"step": 4, "velocity": 100, "note": "F#1"},
+        {"step": 6, "velocity": 80, "note": "F#1"},
+        {"step": 8, "velocity": 100, "note": "F#1"},
+        {"step": 10, "velocity": 70, "note": "F#1"},
+        {"step": 12, "velocity": 100, "note": "F#1"},
+        {"step": 14, "velocity": 80, "note": "F#1"}
+      ]
+    }
+  ],
+  
+  "globalSettings": {
+    "bpm": 170,
+    "swing": 0.0
+  }
+}
