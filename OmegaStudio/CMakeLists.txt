@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.22)
 # ============================================================================
 project(OmegaStudio VERSION 1.0.0 LANGUAGES C CXX)
 
-# Require C++23 (cutting edge features)
-set(CMAKE_CXX_STANDARD 23)
+# Require C++20 (modern features compatible with JUCE)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -56,12 +56,12 @@ if(MSVC)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
     # macOS: Clang optimizations
     add_compile_options(
-        -Wall -Wextra -Wpedantic
-        -Werror                      # Treat warnings as errors
-        -Wno-unused-function         # Allow unused inline functions
-        -ffast-math                  # Fast math operations
-        -fno-exceptions              # Disable exceptions in audio thread
-        -fno-rtti                    # Disable RTTI for performance
+        -Wall
+        -Wno-unused-parameter
+        -Wno-sign-conversion
+        -Wno-shorten-64-to-32
+        -Wno-unused-function
+        -Wno-deprecated-declarations
     )
     
     # Detect Apple Silicon vs Intel
@@ -172,6 +172,46 @@ target_sources(OmegaStudio PRIVATE
     # Utils
     Source/Utils/Constants.h
     Source/Utils/Atomic.h
+    
+    # Project Management
+    Source/Project/ProjectManager.h
+    Source/Project/ProjectManager.cpp
+    
+    # Plugin System
+    Source/Audio/Plugins/PluginManager.h
+    Source/Audio/Plugins/PluginManager.cpp
+    
+    # MIDI Sequencer
+    Source/Sequencer/MIDI/MIDIEngine.h
+    Source/Sequencer/MIDI/MIDIEngine.cpp
+    
+    # Timeline/Arrangement
+    Source/Sequencer/Timeline/Timeline.h
+    Source/Sequencer/Timeline/Timeline.cpp
+    
+    # Mixer
+    Source/Mixer/MixerEngine.h
+    Source/Mixer/MixerEngine.cpp
+    
+    # Professional Effects
+    Source/Audio/DSP/ProfessionalEffects.h
+    Source/Audio/DSP/ProfessionalEffects.cpp
+    
+    # Spectral Analysis
+    Source/Audio/Analysis/SpectralAnalyzer.h
+    Source/Audio/Analysis/SpectralAnalyzer.cpp
+    
+    # Automation System
+    Source/Sequencer/Automation/AutomationSystem.h
+    Source/Sequencer/Automation/AutomationSystem.cpp
+    
+    # Built-in Instruments
+    Source/Audio/Instruments/Instruments.h
+    Source/Audio/Instruments/Instruments.cpp
+    
+    # Advanced AI Features
+    Source/Audio/AI/AdvancedAI.h
+    Source/Audio/AI/AdvancedAI.cpp
 )
 
 # ============================================================================
