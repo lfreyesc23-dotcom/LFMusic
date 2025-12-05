@@ -144,6 +144,30 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/DSP/PitchCorrection.h
     Source/Audio/DSP/PitchCorrection.cpp
     
+    # NEW: Vocal Processing Bundle
+    Source/Audio/DSP/VocalComping.h
+    Source/Audio/DSP/VocalComping.cpp
+    Source/Audio/DSP/VocalHarmonizer.h
+    Source/Audio/DSP/VocalHarmonizer.cpp
+    Source/Audio/DSP/DeEsser.h
+    Source/Audio/DSP/DeEsser.cpp
+    Source/Audio/DSP/BreathControl.h
+    Source/Audio/DSP/BreathControl.cpp
+    Source/Audio/DSP/VocalProcessingBundle.h
+    Source/Audio/DSP/VocalProcessingBundle.cpp
+    
+    # NEW: Mastering Bundle
+    Source/Audio/DSP/MasteringBundle.h
+    Source/Audio/DSP/MasteringBundle.cpp
+    
+    # NEW: Content Library & Sample Slicer
+    Source/Content/ContentLibrary.h
+    Source/Content/ContentLibrary.cpp
+    Source/Audio/SampleSlicer.h
+    Source/Audio/SampleSlicer.cpp
+    Source/Audio/AudioToMidi.h
+    Source/Audio/AudioToMidi.cpp
+    
     # Recording
     Source/Audio/Recording/AudioRecorder.h
     Source/Audio/Recording/AudioRecorder.cpp
@@ -155,6 +179,8 @@ target_sources(OmegaStudio PRIVATE
     # AI Processing
     Source/Audio/AI/VocalEnhancer.h
     Source/Audio/AI/VocalEnhancer.cpp
+    Source/Audio/AI/AIFeatures.h
+    Source/Audio/AI/AIFeatures.cpp
     
     # Memory Management
     Source/Memory/MemoryPool.h
@@ -192,6 +218,8 @@ target_sources(OmegaStudio PRIVATE
     # Mixer
     Source/Mixer/MixerEngine.h
     Source/Mixer/MixerEngine.cpp
+    Source/Mixer/ChannelStrip.h
+    Source/Mixer/ChannelStrip.cpp
     
     # Professional Effects
     Source/Audio/DSP/ProfessionalEffects.h
@@ -224,6 +252,46 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/DSP/TimeStretch.cpp
     Source/Audio/DSP/SidechainCompression.h
     Source/Audio/DSP/SidechainCompression.cpp
+    
+    # Velocity Layers & Multi-sampling
+    Source/Audio/VelocityLayers.h
+    Source/Audio/VelocityLayers.cpp
+    
+    # Reference Matching & Analysis
+    Source/Audio/Analysis/ReferenceMatching.h
+    Source/Audio/Analysis/ReferenceMatching.cpp
+    Source/Audio/Analysis/AdvancedVisualizers.h
+    Source/Audio/Analysis/AdvancedVisualizers.cpp
+    Source/Audio/Analysis/DynamicRangeAnalyzer.h
+    Source/Audio/Analysis/DynamicRangeAnalyzer.cpp
+    Source/Audio/Analysis/TonalBalance.h
+    Source/Audio/Analysis/TonalBalance.cpp
+    
+    # Workflow Systems
+    Source/Workflow/KeyboardShortcuts.h
+    Source/Workflow/KeyboardShortcuts.cpp
+    Source/Workflow/MacroSystem.h
+    Source/Workflow/MacroSystem.cpp
+    Source/Workflow/PresetBrowser.h
+    Source/Workflow/PresetBrowser.cpp
+    Source/Workflow/StemExporter.h
+    Source/Workflow/StemExporter.cpp
+    Source/Workflow/TrackFreezing.h
+    Source/Workflow/TrackFreezing.cpp
+    
+    # Routing Matrix
+    Source/Mixer/RoutingMatrix.h
+    Source/Mixer/RoutingMatrix.cpp
+    
+    # Advanced AI Features
+    Source/Audio/AI/StemSeparation.h
+    Source/Audio/AI/StemSeparation.cpp
+    Source/Audio/AI/AIVocalTuning.h
+    Source/Audio/AI/AIVocalTuning.cpp
+    
+    # Content Management
+    Source/Project/ContentManager.h
+    Source/Project/ContentManager.cpp
     # Source/GUI/SampleBrowser.h  # Temporalmente deshabilitado
     # Source/GUI/SampleBrowser.cpp
 )
