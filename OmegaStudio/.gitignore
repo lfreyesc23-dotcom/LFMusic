@@ -1,0 +1,41 @@
+# Build directories
+Build/
+Builds/
+build/
+cmake-build-*/
+out/
+
+# IDE files
+.vscode/
+.vs/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Windows
+*.user
+*.suo
+*.vcxproj.user
+
+# JUCE
+JuceLibraryCode/
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.app
+*.dylib
+*.dll
+*.so
+*.a
+*.lib
+
+# Logs
+*.log

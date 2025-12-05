@@ -1,0 +1,45 @@
+# Build artifacts (OmegaStudio)
+OmegaStudio/build/
+OmegaStudio/Builds/
+OmegaStudio/cmake-build-*/
+OmegaStudio/out/
+
+# JUCE Framework (clone manually)
+OmegaStudio/JUCE/
+
+# Compiled binaries
+*.o
+*.obj
+*.exe
+*.app
+*.dylib
+*.dll
+*.so
+*.a
+*.lib
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.user
+*.suo
+*.vcxproj.user
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+.cache/

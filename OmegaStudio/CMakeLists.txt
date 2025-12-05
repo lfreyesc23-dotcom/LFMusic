@@ -1,0 +1,261 @@
+cmake_minimum_required(VERSION 3.22)
+
+# ============================================================================
+# PROJECT CONFIGURATION
+# ============================================================================
+project(OmegaStudio VERSION 1.0.0 LANGUAGES CXX)
+
+# Require C++23 (cutting edge features)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Export compile commands for IDE integration
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# ============================================================================
+# JUCE FRAMEWORK INTEGRATION
+# ============================================================================
+# Clone JUCE if not present: git clone https://github.com/juce-framework/JUCE.git
+# Or install via package manager
+
+# Option 1: If JUCE is in a subdirectory
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/JUCE/CMakeLists.txt")
+    add_subdirectory(JUCE)
+    message(STATUS "Using JUCE from subdirectory")
+else()
+    # Option 2: Find JUCE if installed system-wide
+    find_package(JUCE CONFIG REQUIRED)
+    message(STATUS "Using system-installed JUCE")
+endif()
+
+# ============================================================================
+# COMPILER FLAGS & OPTIMIZATIONS
+# ============================================================================
+if(MSVC)
+    # Windows: Visual Studio optimizations
+    add_compile_options(
+        /W4                 # Warning level 4
+        /WX                 # Treat warnings as errors
+        /permissive-        # Standards conformance
+        /Zc:__cplusplus     # Enable __cplusplus macro
+        /arch:AVX2          # Enable AVX2 SIMD instructions
+        /fp:fast            # Fast floating point
+        /Oi                 # Enable intrinsic functions
+        /MP                 # Multi-processor compilation
+    )
+    
+    # Release optimizations
+    add_compile_options($<$<CONFIG:Release>:/O2 /Ob2 /GL>)
+    add_link_options($<$<CONFIG:Release>:/LTCG>)
+    
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
+    # macOS: Clang optimizations
+    add_compile_options(
+        -Wall -Wextra -Wpedantic
+        -Werror                      # Treat warnings as errors
+        -ffast-math                  # Fast math operations
+        -fno-exceptions              # Disable exceptions in audio thread
+        -fno-rtti                    # Disable RTTI for performance
+    )
+    
+    # Detect Apple Silicon vs Intel
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
+        message(STATUS "Building for Apple Silicon (ARM64) - Using NEON")
+        add_compile_options(-mcpu=apple-m1)
+    else()
+        message(STATUS "Building for Intel - Using AVX2")
+        add_compile_options(-mavx2 -mfma)
+    endif()
+    
+    # Release optimizations
+    add_compile_options($<$<CONFIG:Release>:-O3 -flto>)
+    add_link_options($<$<CONFIG:Release>:-flto>)
+    
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Linux: GCC optimizations
+    add_compile_options(
+        -Wall -Wextra -Wpedantic
+        -Werror
+        -ffast-math
+        -mavx2 -mfma
+    )
+    add_compile_options($<$<CONFIG:Release>:-O3 -flto>)
+    add_link_options($<$<CONFIG:Release>:-flto>)
+endif()
+
+# ============================================================================
+# JUCE APPLICATION SETUP
+# ============================================================================
+juce_add_gui_app(OmegaStudio
+    PRODUCT_NAME "Omega Studio"
+    COMPANY_NAME "AudioTech"
+    BUNDLE_ID "com.audiotech.omegastudio"
+    
+    # Formats
+    FORMATS Standalone
+    
+    # Plugin characteristics (for future plugin hosting)
+    IS_SYNTH FALSE
+    NEEDS_MIDI_INPUT TRUE
+    NEEDS_MIDI_OUTPUT TRUE
+    IS_MIDI_EFFECT FALSE
+    
+    # Copy plugin to standard locations
+    COPY_PLUGIN_AFTER_BUILD FALSE
+)
+
+# ============================================================================
+# SOURCE FILES
+# ============================================================================
+target_sources(OmegaStudio PRIVATE
+    # Core Application
+    Source/Core/Main.cpp
+    Source/Core/Application.h
+    Source/Core/Application.cpp
+    
+    # Audio Engine
+    Source/Audio/Engine/AudioEngine.h
+    Source/Audio/Engine/AudioEngine.cpp
+    Source/Audio/Engine/AudioCallback.h
+    Source/Audio/Engine/AudioCallback.cpp
+    
+    # Audio Graph
+    Source/Audio/Graph/AudioGraph.h
+    Source/Audio/Graph/AudioGraph.cpp
+    Source/Audio/Graph/AudioNode.h
+    Source/Audio/Graph/AudioNode.cpp
+    
+    # DSP
+    Source/Audio/DSP/SIMDProcessor.h
+    Source/Audio/DSP/SIMDProcessor.cpp
+    
+    # Memory Management
+    Source/Memory/MemoryPool.h
+    Source/Memory/MemoryPool.cpp
+    Source/Memory/LockFreeFIFO.h
+    
+    # GUI
+    Source/GUI/MainWindow.h
+    Source/GUI/MainWindow.cpp
+    Source/GUI/MainComponent.h
+    Source/GUI/MainComponent.cpp
+    
+    # Utils
+    Source/Utils/Constants.h
+    Source/Utils/Atomic.h
+)
+
+# ============================================================================
+# JUCE MODULES
+# ============================================================================
+target_compile_definitions(OmegaStudio PRIVATE
+    # JUCE Config
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:OmegaStudio,JUCE_PRODUCT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:OmegaStudio,JUCE_VERSION>"
+    
+    # Audio optimizations
+    JUCE_ALLOW_STATIC_NULL_VARIABLES=0
+    JUCE_STRICT_REFCOUNTEDPOINTER=1
+    
+    # Disable JUCE analytics
+    JUCE_DISPLAY_SPLASH_SCREEN=0
+    JUCE_REPORT_APP_USAGE=0
+    
+    # VST3 SDK path (update this to your VST3 SDK location)
+    # JUCE_VST3_PATH="/path/to/VST_SDK/VST3_SDK"
+)
+
+target_link_libraries(OmegaStudio PRIVATE
+    # JUCE Core modules
+    juce::juce_core
+    juce::juce_events
+    juce::juce_data_structures
+    
+    # JUCE Audio modules
+    juce::juce_audio_basics
+    juce::juce_audio_devices
+    juce::juce_audio_formats
+    juce::juce_audio_processors
+    juce::juce_audio_utils
+    
+    # JUCE GUI modules
+    juce::juce_graphics
+    juce::juce_gui_basics
+    juce::juce_gui_extra
+    
+    # JUCE DSP module (SIMD optimizations)
+    juce::juce_dsp
+    
+    # Recommended compile flags
+    juce::juce_recommended_config_flags
+    juce::juce_recommended_lto_flags
+    juce::juce_recommended_warning_flags
+)
+
+# ============================================================================
+# PLATFORM-SPECIFIC CONFIGURATIONS
+# ============================================================================
+if(APPLE)
+    # macOS specific settings
+    set_target_properties(OmegaStudio PROPERTIES
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.audiotech.omegastudio"
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
+    )
+    
+    # Required frameworks for macOS
+    target_link_libraries(OmegaStudio PRIVATE
+        "-framework Accelerate"    # Apple's optimized math library
+        "-framework CoreAudio"
+        "-framework CoreMIDI"
+        "-framework AudioToolbox"
+    )
+    
+    # Codesigning for Apple Silicon
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+        set_target_properties(OmegaStudio PROPERTIES
+            XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "-"
+        )
+    endif()
+    
+elseif(WIN32)
+    # Windows specific settings
+    target_link_libraries(OmegaStudio PRIVATE
+        winmm      # Windows Multimedia API
+        ole32      # COM
+        ws2_32     # Winsock
+    )
+    
+    # Enable Windows 11 features
+    target_compile_definitions(OmegaStudio PRIVATE
+        _WIN32_WINNT=0x0A00    # Windows 10/11
+        WINVER=0x0A00
+    )
+endif()
+
+# ============================================================================
+# INSTALL CONFIGURATION
+# ============================================================================
+install(TARGETS OmegaStudio
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION bin
+)
+
+# ============================================================================
+# CUSTOM TARGETS
+# ============================================================================
+# Print build configuration
+message(STATUS "========================================")
+message(STATUS "OmegaStudio Configuration")
+message(STATUS "========================================")
+message(STATUS "Version: ${PROJECT_VERSION}")
+message(STATUS "C++ Standard: C++${CMAKE_CXX_STANDARD}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "System: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Processor: ${CMAKE_SYSTEM_PROCESSOR}")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "========================================")
