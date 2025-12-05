@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include <array>
+#include <random>
+#include <algorithm>
 
 namespace OmegaStudio {
 namespace Sequencer {
@@ -150,7 +152,8 @@ private:
                 
             case Pattern::Random:
                 arpSequence_ = notes;
-                std::random_shuffle(arpSequence_.begin(), arpSequence_.end());
+                std::shuffle(arpSequence_.begin(), arpSequence_.end(), 
+                            std::default_random_engine{});
                 break;
                 
             case Pattern::Chord:

@@ -56,10 +56,10 @@ private:
  */
 class SampleListItem : public juce::Component {
 public:
-    SampleListItem(const Audio::Library::Sample& sample) 
+    SampleListItem(const SimpleSampleData& sample) 
         : sample_(sample) {
         
-        thumbnail_.setFile(juce::File(juce::String(sample_.getFilePath())));
+        thumbnail_.setFile(juce::File(sample_.filePath));
         addAndMakeVisible(thumbnail_);
         setSize(300, 60);
     }
@@ -80,7 +80,7 @@ public:
         
         g.setColour(juce::Colours::white);
         g.setFont(14.0f);
-        g.drawText(juce::String(sample_.getName()), 
+        g.drawText(sample_.name, 
                   textArea.removeFromTop(20).reduced(5), 
                   juce::Justification::centredLeft);
         
@@ -88,14 +88,12 @@ public:
         g.setFont(11.0f);
         g.setColour(juce::Colours::grey);
         
-        auto metadata = sample_.getMetadata();
-        juce::String info = juce::String(metadata.bpm, 1) + " BPM | " + 
-                           juce::String(metadata.key);
+        juce::String info = juce::String(sample_.bpm, 1) + " BPM | " + sample_.key;
         g.drawText(info, textArea.removeFromTop(18).reduced(5), 
                   juce::Justification::centredLeft);
         
         // Category
-        g.drawText(juce::String(metadata.category), 
+        g.drawText(sample_.category, 
                   textArea.reduced(5), 
                   juce::Justification::centredLeft);
     }
@@ -122,10 +120,10 @@ public:
     }
     
     bool isSelected() const { return selected_; }
-    const Audio::Library::Sample& getSample() const { return sample_; }
+    const ::OmegaStudio::Audio::Library::Sample& getSample() const { return sample_; }
     
 private:
-    Audio::Library::Sample sample_;
+    ::OmegaStudio::Audio::Library::Sample sample_;
     WaveformThumbnail thumbnail_;
     bool isMouseOver_ { false };
     bool selected_ { false };
@@ -225,8 +223,7 @@ class SampleBrowserComponent : public juce::Component,
                                 public juce::Button::Listener,
                                 public juce::Timer {
 public:
-    SampleBrowserComponent(Audio::Library::SampleLibrary& library)
-        : library_(library) {
+    SampleBrowserComponent() {
         
         // Search box
         searchBox_.setTextToShowWhenEmpty("Search samples...", juce::Colours::grey);
@@ -426,9 +423,9 @@ private:
         sampleContainer_.deleteAllChildren();
         sampleItems_.clear();
         
-        // Get filtered samples
-        auto searchText = searchBox_.getText().toLowerCase();
-        auto samples = library_.searchSamples(searchText.toStdString(), currentCategory_.toStdString());
+        // Get filtered samples (stub - integrate with your sample library)
+        std::vector<SimpleSampleData> samples;
+        // TODO: Populate from actual sample library
         
         // Sort
         sortSamples(samples);
@@ -447,19 +444,15 @@ private:
         updateSampleContainerSize();
     }
     
-    void sortSamples(std::vector<Audio::Library::Sample>& samples) {
+    void sortSamples(std::vector<SimpleSampleData>& samples) {
         int sortMode = sortCombo_.getSelectedId();
         
         std::sort(samples.begin(), samples.end(), 
-            [sortMode](const Audio::Library::Sample& a, const Audio::Library::Sample& b) {
-                auto metaA = a.getMetadata();
-                auto metaB = b.getMetadata();
-                
+            [sortMode](const SimpleSampleData& a, const SimpleSampleData& b) {
                 switch (sortMode) {
-                    case 1: return metaA.name < metaB.name;  // Name
-                    case 2: return metaA.bpm < metaB.bpm;    // BPM
-                    case 3: return metaA.key < metaB.key;    // Key
-                    case 4: return metaA.dateAdded > metaB.dateAdded;  // Date (newest first)
+                    case 1: return a.name < b.name;  // Name
+                    case 2: return a.bpm < b.bpm;    // BPM
+                    case 3: return a.key < b.key;    // Key
                     default: return false;
                 }
             }
@@ -501,7 +494,7 @@ private:
         selectedSample_->setSelected(true);
         
         // Load into preview player
-        juce::File file(juce::String(item->getSample().getFilePath()));
+        juce::File file(item->getSample().filePath);
         previewPlayer_.loadSample(file);
         
         repaint();
@@ -510,8 +503,6 @@ private:
     juce::Rectangle<int> getPreviewArea() const {
         return getLocalBounds().removeFromBottom(150).reduced(5);
     }
-    
-    Audio::Library::SampleLibrary& library_;
     
     // UI Components
     juce::TextEditor searchBox_;

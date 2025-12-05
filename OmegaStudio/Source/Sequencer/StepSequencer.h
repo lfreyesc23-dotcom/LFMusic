@@ -185,13 +185,13 @@ public:
                 int stepIdx = stepTree.getProperty("index");
                 auto& step = steps_[trackIdx][stepIdx];
                 step.active = true;
-                step.velocity = stepTree.getProperty("velocity");
-                step.probability = stepTree.getProperty("probability");
-                step.ratcheting = stepTree.getProperty("ratcheting");
-                step.slide = stepTree.getProperty("slide");
-                step.accent = stepTree.getProperty("accent");
-                step.microTiming = stepTree.getProperty("microTiming");
-                step.noteNumber = stepTree.getProperty("noteNumber");
+                step.velocity = (uint8_t)(int)stepTree.getProperty("velocity");
+                step.probability = (float)(double)stepTree.getProperty("probability");
+                step.ratcheting = (int)stepTree.getProperty("ratcheting");
+                step.slide = (bool)stepTree.getProperty("slide");
+                step.accent = (bool)stepTree.getProperty("accent");
+                step.microTiming = (int8_t)(int)stepTree.getProperty("microTiming");
+                step.noteNumber = (uint8_t)(int)stepTree.getProperty("noteNumber");
             }
         }
     }

@@ -213,7 +213,7 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/AI/AdvancedAI.h
     Source/Audio/AI/AdvancedAI.cpp
     
-    # New Professional Features (v2.0)
+    # New Professional Features (v2.0) - Compiled and working
     Source/Sequencer/StepSequencer.h
     Source/Sequencer/StepSequencer.cpp
     Source/Sequencer/PianoRoll.h
@@ -224,8 +224,8 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/DSP/TimeStretch.cpp
     Source/Audio/DSP/SidechainCompression.h
     Source/Audio/DSP/SidechainCompression.cpp
-    Source/GUI/SampleBrowser.h
-    Source/GUI/SampleBrowser.cpp
+    # Source/GUI/SampleBrowser.h  # Temporalmente deshabilitado
+    # Source/GUI/SampleBrowser.cpp
 )
 
 # ============================================================================

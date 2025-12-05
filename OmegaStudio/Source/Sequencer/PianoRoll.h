@@ -249,7 +249,6 @@ public:
         addAndMakeVisible(horizontalScrollbar_);
         
         verticalScrollbar_.setAutoHide(false);
-        verticalScrollbar_.setVertical(true);
         verticalScrollbar_.addListener(this);
         addAndMakeVisible(verticalScrollbar_);
         
