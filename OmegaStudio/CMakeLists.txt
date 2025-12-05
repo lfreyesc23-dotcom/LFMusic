@@ -212,6 +212,20 @@ target_sources(OmegaStudio PRIVATE
     # Advanced AI Features
     Source/Audio/AI/AdvancedAI.h
     Source/Audio/AI/AdvancedAI.cpp
+    
+    # New Professional Features (v2.0)
+    Source/Sequencer/StepSequencer.h
+    Source/Sequencer/StepSequencer.cpp
+    Source/Sequencer/PianoRoll.h
+    Source/Sequencer/PianoRoll.cpp
+    Source/Sequencer/MIDIFX.h
+    Source/Sequencer/MIDIFX.cpp
+    Source/Audio/DSP/TimeStretch.h
+    Source/Audio/DSP/TimeStretch.cpp
+    Source/Audio/DSP/SidechainCompression.h
+    Source/Audio/DSP/SidechainCompression.cpp
+    Source/GUI/SampleBrowser.h
+    Source/GUI/SampleBrowser.cpp
 )
 
 # ============================================================================
