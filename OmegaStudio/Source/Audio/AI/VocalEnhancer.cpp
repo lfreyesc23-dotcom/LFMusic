@@ -138,12 +138,14 @@ void DeEsser::process(float* buffer, int numSamples) {
     }
 
     // Create JUCE audio block
-    juce::dsp::AudioBlock<float> block(&buffer, 1, numSamples);
+    float* channelPointers[] = {buffer};
+    juce::dsp::AudioBlock<float> block(channelPointers, 1, numSamples);
     juce::dsp::ProcessContextReplacing<float> context(block);
 
     // Copy for sidechain detection
     std::vector<float> sidechain(buffer, buffer + numSamples);
-    juce::dsp::AudioBlock<float> sidechainBlock(&sidechain[0], 1, numSamples);
+    float* sidechainPointers[] = {sidechain.data()};
+    juce::dsp::AudioBlock<float> sidechainBlock(sidechainPointers, 1, numSamples);
     juce::dsp::ProcessContextReplacing<float> sidechainContext(sidechainBlock);
 
     // Filter sidechain to isolate sibilance
@@ -246,8 +248,8 @@ bool BreathRemover::detectBreath(float energy, float spectralCentroid) {
     float centroidHigh = 2000.0f;
 
     return (energy < energyThreshold &&
-            centroid > centroidLow &&
-            centroid < centroidHigh);
+            spectralCentroid > centroidLow &&
+            spectralCentroid < centroidHigh);
 }
 
 float BreathRemover::calculateSpectralCentroid(const float* buffer, int numSamples) {

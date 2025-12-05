@@ -6,7 +6,6 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <memory>
 
 namespace Omega {
 
@@ -20,7 +19,7 @@ namespace GUI { class MainWindow; }
 class OmegaStudioApplication : public juce::JUCEApplication {
 public:
     OmegaStudioApplication() = default;
-    ~OmegaStudioApplication() override = default;
+    ~OmegaStudioApplication() override;
     
     //==========================================================================
     // JUCEApplication Interface
@@ -43,8 +42,8 @@ public:
     [[nodiscard]] Audio::AudioEngine* getAudioEngine() noexcept;
     
 private:
-    std::unique_ptr<Audio::AudioEngine> audioEngine_;
-    std::unique_ptr<GUI::MainWindow> mainWindow_;
+    Audio::AudioEngine* audioEngine_ = nullptr;
+    GUI::MainWindow* mainWindow_ = nullptr;
 };
 
 } // namespace Omega

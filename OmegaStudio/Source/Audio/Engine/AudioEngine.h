@@ -14,10 +14,10 @@
 #include <JuceHeader.h>
 #include <memory>
 #include <atomic>
-#include "../Memory/MemoryPool.h"
-#include "../Memory/LockFreeFIFO.h"
-#include "../Utils/Constants.h"
-#include "../Utils/Atomic.h"
+#include "../../Memory/MemoryPool.h"
+#include "../../Memory/LockFreeFIFO.h"
+#include "../../Utils/Constants.h"
+#include "../../Utils/Atomic.h"
 
 namespace Omega::Audio {
 

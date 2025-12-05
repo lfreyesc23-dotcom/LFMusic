@@ -11,6 +11,21 @@
 namespace Omega {
 
 //==============================================================================
+// Destructor
+//==============================================================================
+OmegaStudioApplication::~OmegaStudioApplication() {
+    // Ensure proper cleanup order
+    if (mainWindow_) {
+        delete mainWindow_;
+        mainWindow_ = nullptr;
+    }
+    if (audioEngine_) {
+        delete audioEngine_;
+        audioEngine_ = nullptr;
+    }
+}
+
+//==============================================================================
 void OmegaStudioApplication::initialise(const juce::String& commandLine) {
     juce::ignoreUnused(commandLine);
     
@@ -20,7 +35,7 @@ void OmegaStudioApplication::initialise(const juce::String& commandLine) {
     juce::Logger::writeToLog("===========================================");
     
     // Initialize audio engine
-    audioEngine_ = std::make_unique<Audio::AudioEngine>();
+    audioEngine_ = new Audio::AudioEngine();
     
     Audio::AudioEngineConfig config;
     config.sampleRate = Audio::DEFAULT_SAMPLE_RATE;
@@ -41,9 +56,9 @@ void OmegaStudioApplication::initialise(const juce::String& commandLine) {
     }
     
     // Create main window
-    mainWindow_ = std::make_unique<GUI::MainWindow>(
+    mainWindow_ = new GUI::MainWindow(
         getApplicationName(),
-        audioEngine_.get()
+        audioEngine_
     );
     mainWindow_->setVisible(true);
 }
@@ -53,12 +68,16 @@ void OmegaStudioApplication::shutdown() {
     juce::Logger::writeToLog("Shutting down Omega Studio...");
     
     // Destroy window first
-    mainWindow_.reset();
+    if (mainWindow_) {
+        delete mainWindow_;
+        mainWindow_ = nullptr;
+    }
     
     // Then shutdown audio
     if (audioEngine_) {
         audioEngine_->shutdown();
-        audioEngine_.reset();
+        delete audioEngine_;
+        audioEngine_ = nullptr;
     }
     
     juce::Logger::writeToLog("Shutdown complete");
@@ -76,7 +95,7 @@ void OmegaStudioApplication::anotherInstanceStarted(const juce::String& commandL
 
 //==============================================================================
 Audio::AudioEngine* OmegaStudioApplication::getAudioEngine() noexcept {
-    return audioEngine_.get();
+    return audioEngine_;
 }
 
 } // namespace Omega

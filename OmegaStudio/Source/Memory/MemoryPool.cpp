@@ -12,8 +12,8 @@ namespace Omega::Memory {
 //==============================================================================
 MemoryPool::MemoryPool(size_t poolSize, size_t blockSize)
     : blockSize_(std::max(blockSize, sizeof(FreeNode)))
-    , numBlocks_(poolSize / blockSize_)
     , freeList_(nullptr)
+    , numBlocks_(poolSize / blockSize_)
 {
     // Allocate the entire pool
     memory_ = std::make_unique<uint8_t[]>(numBlocks_ * blockSize_);

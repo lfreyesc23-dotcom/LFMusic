@@ -67,9 +67,11 @@ bool AudioEngine::initialize(const AudioEngineConfig& config) {
         return false;
     }
     
-    // Configure buffer size
+    // Configure buffer size via AudioDeviceManager setup
     if (config_.bufferSize > 0) {
-        device->setBufferSize(config_.bufferSize);
+        auto setup = deviceManager_->getAudioDeviceSetup();
+        setup.bufferSize = config_.bufferSize;
+        deviceManager_->setAudioDeviceSetup(setup, true);
     }
     
     // Store actual device parameters

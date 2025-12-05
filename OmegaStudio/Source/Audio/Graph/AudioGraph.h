@@ -20,16 +20,29 @@
 namespace Omega::Audio {
 
 //==============================================================================
-// Forward declarations
-//==============================================================================
-class AudioNode;
-class AudioConnection;
-
-//==============================================================================
 // Node ID type
 //==============================================================================
 using NodeID = uint32_t;
 constexpr NodeID INVALID_NODE_ID = 0;
+
+//==============================================================================
+// Forward declarations
+//==============================================================================
+class AudioNode;
+
+//==============================================================================
+// AudioConnection - Represents a connection between two nodes
+//==============================================================================
+struct AudioConnection {
+    NodeID sourceNodeId;
+    int sourceChannel;
+    NodeID destNodeId;
+    int destChannel;
+    float gain = 1.0f;
+    
+    AudioConnection(NodeID src, int srcCh, NodeID dst, int dstCh)
+        : sourceNodeId(src), sourceChannel(srcCh), destNodeId(dst), destChannel(dstCh) {}
+};
 
 //==============================================================================
 // AudioGraph - Manages the audio processing graph

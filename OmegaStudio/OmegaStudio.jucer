@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="OmgStd" name="OmegaStudio" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="1" jucerFormatVersion="1" version="1.0.0"
+              bundleIdentifier="com.omegastudio.daw" includeBinaryInAppConfig="1"
+              cppLanguageStandard="20" displaySplashScreen="0" reportAppUsage="0"
+              companyName="OmegaStudio">
+  <MAINGROUP id="fX8wjh" name="OmegaStudio">
+    <GROUP id="{8D3E4D3C-1234-5678-9ABC-DEF012345678}" name="Source">
+      <GROUP id="{CORE0001-1234-5678-9ABC-DEF012345678}" name="Core">
+        <FILE id="tGk3Qp" name="Main.cpp" compile="1" resource="0" file="Source/Core/Main.cpp"/>
+        <FILE id="hJd8Wn" name="Application.h" compile="0" resource="0" file="Source/Core/Application.h"/>
+        <FILE id="mNb7Vc" name="Application.cpp" compile="1" resource="0" file="Source/Core/Application.cpp"/>
+      </GROUP>
+      <GROUP id="{AUDIO001-1234-5678-9ABC-DEF012345678}" name="Audio">
+        <GROUP id="{ENGINE01-1234-5678-9ABC-DEF012345678}" name="Engine">
+          <FILE id="aEn1Hd" name="AudioEngine.h" compile="0" resource="0" file="Source/Audio/Engine/AudioEngine.h"/>
+          <FILE id="bEn2Cp" name="AudioEngine.cpp" compile="1" resource="0" file="Source/Audio/Engine/AudioEngine.cpp"/>
+          <FILE id="cCb3Hd" name="AudioCallback.h" compile="0" resource="0" file="Source/Audio/Engine/AudioCallback.h"/>
+          <FILE id="dCb4Cp" name="AudioCallback.cpp" compile="1" resource="0" file="Source/Audio/Engine/AudioCallback.cpp"/>
+        </GROUP>
+        <GROUP id="{GRAPH001-1234-5678-9ABC-DEF012345678}" name="Graph">
+          <FILE id="eNd5Hd" name="AudioNode.h" compile="0" resource="0" file="Source/Audio/Graph/AudioNode.h"/>
+          <FILE id="fNd6Cp" name="AudioNode.cpp" compile="1" resource="0" file="Source/Audio/Graph/AudioNode.cpp"/>
+          <FILE id="gGr7Hd" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/Graph/AudioGraph.h"/>
+          <FILE id="hGr8Cp" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/Graph/AudioGraph.cpp"/>
+          <FILE id="iPr9Hd" name="ProcessorNodes.h" compile="0" resource="0" file="Source/Audio/Graph/ProcessorNodes.h"/>
+          <FILE id="jPrACp" name="ProcessorNodes.cpp" compile="1" resource="0" file="Source/Audio/Graph/ProcessorNodes.cpp"/>
+        </GROUP>
+        <GROUP id="{DSP00001-1234-5678-9ABC-DEF012345678}" name="DSP">
+          <FILE id="kSiBHd" name="SIMDProcessor.h" compile="0" resource="0" file="Source/Audio/DSP/SIMDProcessor.h"/>
+          <FILE id="lSiCCp" name="SIMDProcessor.cpp" compile="1" resource="0" file="Source/Audio/DSP/SIMDProcessor.cpp"/>
+          <FILE id="mPiDHd" name="PitchCorrection.h" compile="0" resource="0" file="Source/Audio/DSP/PitchCorrection.h"/>
+          <FILE id="nPiECp" name="PitchCorrection.cpp" compile="1" resource="0" file="Source/Audio/DSP/PitchCorrection.cpp"/>
+        </GROUP>
+        <GROUP id="{RECRD01-1234-5678-9ABC-DEF012345678}" name="Recording">
+          <FILE id="oReFHd" name="AudioRecorder.h" compile="0" resource="0" file="Source/Audio/Recording/AudioRecorder.h"/>
+          <FILE id="pReGCp" name="AudioRecorder.cpp" compile="1" resource="0" file="Source/Audio/Recording/AudioRecorder.cpp"/>
+        </GROUP>
+        <GROUP id="{LIBRRY01-1234-5678-9ABC-DEF012345678}" name="Library">
+          <FILE id="qSaHHd" name="SampleManager.h" compile="0" resource="0" file="Source/Audio/Library/SampleManager.h"/>
+          <FILE id="rSaICp" name="SampleManager.cpp" compile="1" resource="0" file="Source/Audio/Library/SampleManager.cpp"/>
+        </GROUP>
+        <GROUP id="{AI000001-1234-5678-9ABC-DEF012345678}" name="AI">
+          <FILE id="sVoJHd" name="VocalEnhancer.h" compile="0" resource="0" file="Source/Audio/AI/VocalEnhancer.h"/>
+          <FILE id="tVoKCp" name="VocalEnhancer.cpp" compile="1" resource="0" file="Source/Audio/AI/VocalEnhancer.cpp"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{MEMORY01-1234-5678-9ABC-DEF012345678}" name="Memory">
+        <FILE id="uMeLHd" name="MemoryPool.h" compile="0" resource="0" file="Source/Memory/MemoryPool.h"/>
+        <FILE id="vMeMCp" name="MemoryPool.cpp" compile="1" resource="0" file="Source/Memory/MemoryPool.cpp"/>
+        <FILE id="wLfNHd" name="LockFreeFIFO.h" compile="0" resource="0" file="Source/Memory/LockFreeFIFO.h"/>
+      </GROUP>
+      <GROUP id="{GUI00001-1234-5678-9ABC-DEF012345678}" name="GUI">
+        <FILE id="xMwOHd" name="MainWindow.h" compile="0" resource="0" file="Source/GUI/MainWindow.h"/>
+        <FILE id="yMwPCp" name="MainWindow.cpp" compile="1" resource="0" file="Source/GUI/MainWindow.cpp"/>
+        <FILE id="wMcTHd" name="MainComponent.h" compile="0" resource="0" file="Source/GUI/MainComponent.h"/>
+        <FILE id="vMcUCp" name="MainComponent.cpp" compile="1" resource="0" file="Source/GUI/MainComponent.cpp"/>
+        <FILE id="zPrQHd" name="ProcessorPanels.h" compile="0" resource="0" file="Source/GUI/ProcessorPanels.h"/>
+        <FILE id="aPrRCp" name="ProcessorPanels.cpp" compile="1" resource="0" file="Source/GUI/ProcessorPanels.cpp"/>
+      </GROUP>
+      <FILE id="juchdr" name="JuceHeader.h" compile="0" resource="0" file="Source/JuceHeader.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-Wall -Wextra -Wpedantic -Wno-unused-function"
+               externalLibraries="" extraLinkerFlags="-framework Accelerate">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="OmegaStudio" recommendedWarnings="LLVM"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="OmegaStudio" recommendedWarnings="LLVM"
+                       optimisation="3" linkTimeOptimisation="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP="0"/>
+</JUCERPROJECT>

@@ -64,6 +64,7 @@ public:
 private:
     void performLPC(); // Linear Predictive Coding
     void extractFormants();
+    int findPeakInRange(int startBin, int endBin) const;
     
     std::unique_ptr<juce::dsp::FFT> m_fft;
     std::vector<float> m_analysisBuffer;

@@ -38,8 +38,8 @@ public:
     // Non-copyable, movable
     MemoryPool(const MemoryPool&) = delete;
     MemoryPool& operator=(const MemoryPool&) = delete;
-    MemoryPool(MemoryPool&&) noexcept = default;
-    MemoryPool& operator=(MemoryPool&&) noexcept = default;
+    MemoryPool(MemoryPool&&) = delete;
+    MemoryPool& operator=(MemoryPool&&) = delete;
     
     //==========================================================================
     // Allocate a block (real-time safe, lock-free)
