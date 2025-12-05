@@ -17,14 +17,16 @@ MainWindow::MainWindow(const juce::String& name, Audio::AudioEngine* audioEngine
 {
     setUsingNativeTitleBar(true);
     
-    mainComponent_ = std::make_unique<MainComponent>(audioEngine);
-    setContentOwned(mainComponent_.get(), true);
+    // Create MainComponent and give ownership to DocumentWindow
+    mainComponent_ = new MainComponent(audioEngine);
+    setContentOwned(mainComponent_, true);
     
     #if JUCE_IOS || JUCE_ANDROID
         setFullScreen(true);
     #else
         setResizable(true, true);
-        centreWithSize(getWidth(), getHeight());
+        // Use reasonable default size (not full 1920x1080)
+        centreWithSize(1400, 900);
     #endif
     
     setVisible(true);
@@ -32,7 +34,7 @@ MainWindow::MainWindow(const juce::String& name, Audio::AudioEngine* audioEngine
 
 //==============================================================================
 MainWindow::~MainWindow() {
-    mainComponent_ = nullptr;
+    // mainComponent_ is owned and destroyed by DocumentWindow
 }
 
 //==============================================================================

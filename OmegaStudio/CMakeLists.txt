@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 # ============================================================================
 # PROJECT CONFIGURATION
 # ============================================================================
-project(OmegaStudio VERSION 1.0.0 LANGUAGES CXX)
+project(OmegaStudio VERSION 1.0.0 LANGUAGES C CXX)
 
 # Require C++23 (cutting edge features)
 set(CMAKE_CXX_STANDARD 23)
@@ -18,6 +18,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ============================================================================
 # Clone JUCE if not present: git clone https://github.com/juce-framework/JUCE.git
 # Or install via package manager
+
+# Disable building JUCE extras (demos, tools)
+set(JUCE_BUILD_EXTRAS OFF CACHE BOOL "Build JUCE Extras" FORCE)
+set(JUCE_BUILD_EXAMPLES OFF CACHE BOOL "Build JUCE Examples" FORCE)
 
 # Option 1: If JUCE is in a subdirectory
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/JUCE/CMakeLists.txt")
@@ -54,6 +58,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
     add_compile_options(
         -Wall -Wextra -Wpedantic
         -Werror                      # Treat warnings as errors
+        -Wno-unused-function         # Allow unused inline functions
         -ffast-math                  # Fast math operations
         -fno-exceptions              # Disable exceptions in audio thread
         -fno-rtti                    # Disable RTTI for performance
@@ -69,7 +74,8 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
     endif()
     
     # Release optimizations
-    add_compile_options($<$<CONFIG:Release>:-O3 -flto>)
+    add_compile_options($<$<CONFIG:Release>:-O3>)
+    add_compile_options($<$<CONFIG:Release>:-flto>)
     add_link_options($<$<CONFIG:Release>:-flto>)
     
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -80,7 +86,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         -ffast-math
         -mavx2 -mfma
     )
-    add_compile_options($<$<CONFIG:Release>:-O3 -flto>)
+    add_compile_options($<$<CONFIG:Release>:-O3>)
+    add_compile_options($<$<CONFIG:Release>:-flto>)
     add_link_options($<$<CONFIG:Release>:-flto>)
 endif()
 
@@ -103,6 +110,9 @@ juce_add_gui_app(OmegaStudio
     
     # Copy plugin to standard locations
     COPY_PLUGIN_AFTER_BUILD FALSE
+    
+    # Generate JuceHeader.h for legacy compatibility
+    JUCE_GENERATE_JUCE_HEADER TRUE
 )
 
 # ============================================================================
@@ -211,6 +221,11 @@ target_link_libraries(OmegaStudio PRIVATE
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
+)
+
+# Add Source directory to include path for JuceHeader.h
+target_include_directories(OmegaStudio PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source
 )
 
 # ============================================================================

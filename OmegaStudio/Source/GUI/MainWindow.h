@@ -6,7 +6,6 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <memory>
 
 namespace Omega {
 namespace Audio { class AudioEngine; }
@@ -25,7 +24,7 @@ public:
     void closeButtonPressed() override;
     
 private:
-    std::unique_ptr<MainComponent> mainComponent_;
+    MainComponent* mainComponent_;  // Owned by DocumentWindow via setContentOwned
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 };
