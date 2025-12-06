@@ -339,6 +339,56 @@ target_sources(OmegaStudio PRIVATE
     
     # NEW Export & Performance
     Source/Workflow/ExportEngine.h
+    
+    # ========== FL STUDIO KILLER - GOD TIER IMPLEMENTATION ==========
+    
+    # Professional Mixer & DSP
+    Source/Audio/DSP/ParametricEQ.h
+    Source/Audio/DSP/ParametricEQ.cpp
+    Source/Audio/DSP/MultibandCompressor.h
+    Source/Audio/DSP/MultibandCompressor.cpp
+    Source/Audio/DSP/LimiterMaximizer.h
+    Source/Audio/DSP/LimiterMaximizer.cpp
+    
+    # Spectrum Analysis
+    Source/Audio/Analysis/SpectrumAnalyzer.h
+    Source/Audio/Analysis/SpectrumAnalyzer.cpp
+    
+    # Automation System
+    Source/Workflow/AutomationClip.h
+    Source/Workflow/AutomationClip.cpp
+    
+    # Advanced Drum Programming
+    Source/Sequencer/DrumProgramming.h
+    
+    # Modulation & Synthesis
+    Source/Audio/Synthesis/ModulationMatrix.h
+    Source/Audio/Synthesis/ModulationMatrix.cpp
+    
+    # Workflow & UX Systems
+    Source/Workflow/UndoRedoSystem.h
+    
+    # Visual Design Systems
+    Source/GUI/VisualMeteringSystem.h
+    Source/GUI/AdvancedComponents.h
+    Source/GUI/AdvancedComponents.cpp
+    
+    # Project Management
+    Source/Project/ProjectManagement.h
+    
+    # Advanced Plugin System
+    Source/Audio/PluginSystemAdvanced.h
+    
+    # Composition Tools (100+ chord progressions, notation, etc)
+    Source/Composition/CompositionTools.h
+    Source/Composition/ChordProgressionSystem.cpp
+    
+    # Vocal Production Suite
+    Source/Audio/VocalProductionSuite.h
+    Source/Audio/VocalProductionSuite.cpp
+    
+    # Performance & Optimization
+    Source/Performance/PerformanceSystem.h
 )
 
 # ============================================================================

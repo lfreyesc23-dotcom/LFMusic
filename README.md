@@ -1,14 +1,19 @@
-# 🍓 FRUTILLA STUDIO - Professional Music Production
+# 🎵 Frutilla Studio - FL Studio Killer DAW
 
-> **Cross-platform music production app with autotune, recording, beats library, and AI vocal enhancement**
-> **NOW WITH FL STUDIO-STYLE WORKFLOW! 🎉**
+<div align="center">
 
-[![Electron](https://img.shields.io/badge/Electron-28-blue.svg)](https://www.electronjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-20-green.svg)](https://nodejs.org/)
-[![C++20](https://img.shields.io/badge/C++-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
-[![JUCE](https://img.shields.io/badge/JUCE-8-orange.svg)](https://juce.com/)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey.svg)](https://github.com)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![C++](https://img.shields.io/badge/C++-20-00599C?logo=cplusplus)
+![JUCE](https://img.shields.io/badge/JUCE-8.0.4-orange)
+![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)
+![License](https://img.shields.io/badge/license-Proprietary-red)
+
+**Professional Digital Audio Workstation**
+Cross-Platform | Real-Time | AI-Enhanced
+
+[Features](#-features) • [Build](#-building) • [Documentation](#-documentation) • [Architecture](#-architecture)
+
+</div>
 
 ---
 

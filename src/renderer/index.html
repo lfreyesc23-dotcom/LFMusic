@@ -74,7 +74,7 @@
           <div class="recording-info">
             <div class="info-item">
               <span class="label">Input Device:</span>
-              <select id="inputDevice">
+              <select id="inputDevice" aria-label="Input Device">
                 <option>Default Input</option>
               </select>
             </div>
@@ -96,13 +96,13 @@
           <div class="autotune-panel">
             <div class="control-group">
               <label>Correction Amount</label>
-              <input type="range" id="autotuneAmount" min="0" max="100" value="50">
+              <input type="range" id="autotuneAmount" min="0" max="100" value="50" aria-label="Correction Amount">
               <span id="autotuneAmountValue">50%</span>
             </div>
 
             <div class="control-group">
               <label>Key</label>
-              <select id="autotuneKey">
+              <select id="autotuneKey" aria-label="Key">
                 <option>C Major</option>
                 <option>D Major</option>
                 <option>E Major</option>
@@ -122,13 +122,13 @@
 
             <div class="control-group">
               <label>Retune Speed (ms)</label>
-              <input type="range" id="retuneSpeed" min="0" max="400" value="100">
+              <input type="range" id="retuneSpeed" min="0" max="400" value="100" aria-label="Retune Speed">
               <span id="retuneSpeedValue">100ms</span>
             </div>
 
             <div class="control-group">
               <label>Humanize</label>
-              <input type="range" id="humanize" min="0" max="100" value="30">
+              <input type="range" id="humanize" min="0" max="100" value="30" aria-label="Humanize">
               <span id="humanizeValue">30%</span>
             </div>
 

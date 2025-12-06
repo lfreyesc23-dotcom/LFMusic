@@ -52,14 +52,7 @@ void MasteringLimiter::setRelease(float ms) { releaseMs = ms; }
 void MasteringLimiter::setCeiling(float db) { ceilingDb = db; }
 void MasteringLimiter::setLookahead(float ms) { lookaheadMs = ms; }
 
-MultibandCompressor::MultibandCompressor() {}
-void MultibandCompressor::prepareToPlay(double sr, int) { sampleRate = sr; updateFilters(); }
-void MultibandCompressor::process(juce::AudioBuffer<float>&) {}
-void MultibandCompressor::setBandSettings(int, const BandSettings&) {}
-MultibandCompressor::BandSettings MultibandCompressor::getBandSettings(int idx) const { return idx >= 0 && idx < numBands ? bandSettings[idx] : BandSettings{}; }
-void MultibandCompressor::setLowMidCrossover(float freq) { lowMidCrossover = freq; updateFilters(); }
-void MultibandCompressor::setMidHighCrossover(float freq) { midHighCrossover = freq; updateFilters(); }
-void MultibandCompressor::updateFilters() {}
+// MultibandCompressor implementation in MultibandCompressor.cpp
 
 TransientShaper::TransientShaper() {}
 void TransientShaper::prepareToPlay(double sr, int) { sampleRate = sr; }
