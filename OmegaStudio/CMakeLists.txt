@@ -220,6 +220,18 @@ target_sources(OmegaStudio PRIVATE
     Source/GUI/StemSeparatorUI.h
     Source/GUI/SmartMixingAssistantUI.h
     
+    # FL Studio-style Look & Feel
+    Source/GUI/FLStudioLookAndFeel.h
+    Source/GUI/FLStudioLookAndFeel.cpp
+    Source/GUI/ChannelRackUI.h
+    Source/GUI/ChannelRackUI.cpp
+    Source/GUI/FLStudioMainWindow.h
+    Source/GUI/FLStudioMainWindow.cpp
+    
+    # NEW: FL STUDIO 2025 INTERFACE (EXACT REPLICA)
+    Source/GUI/FLStudio2025Interface.h
+    Source/GUI/FLStudio2025Interface.cpp
+    
     # Utils
     Source/Utils/Constants.h
     Source/Utils/Atomic.h

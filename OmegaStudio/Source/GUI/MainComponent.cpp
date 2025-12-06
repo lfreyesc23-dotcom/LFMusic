@@ -5,6 +5,7 @@
 #include "MainComponent.h"
 #include "../Audio/Engine/AudioEngine.h"
 #include "../Utils/Constants.h"
+#include "../Sequencer/ChannelRack.h"
 
 namespace Omega::GUI {
 
@@ -13,6 +14,9 @@ MainComponent::MainComponent(Audio::AudioEngine* audioEngine)
     : audioEngine_(audioEngine),
       pluginManager(OmegaStudio::PluginManager::getInstance())
 {
+    // Apply FL Studio Look & Feel
+    setLookAndFeel(&flLookAndFeel_);
+    
     setSize(GUI::DEFAULT_WINDOW_WIDTH, GUI::DEFAULT_WINDOW_HEIGHT);
     
     // Initialize all DAW systems
@@ -25,15 +29,66 @@ MainComponent::MainComponent(Audio::AudioEngine* audioEngine)
     smartEQ = std::make_unique<OmegaStudio::SmartEQ>();
     mixAnalyzer = std::make_unique<OmegaStudio::MixAnalyzer>();
     
+    // Create Channel Rack Engine
+    channelRackEngine_ = std::make_unique<OmegaStudio::Sequencer::ChannelRackEngine>();
+    
+    // Create FL Studio-style Channel Rack UI
+    channelRackUI_ = std::make_unique<ChannelRackUI>(*channelRackEngine_);
+    // NO añadirlo aún, lo hacemos al final después de los paneles
+    
+    // Create Record Toolbar (NEW - Panel superior de grabación)
+    recordToolbar_ = std::make_unique<OmegaStudio::GUI::RecordToolbar>();
+    addAndMakeVisible(recordToolbar_.get());
+    DBG("✓ RecordToolbar created and added");
+    
+    recordToolbar_->onRecordClicked = [](bool recording) {
+        DBG("Recording: " << recording);
+    };
+    
+    recordToolbar_->onPlayClicked = [](bool playing) {
+        DBG("Playing: " << playing);
+    };
+    
+    recordToolbar_->onStopClicked = []() {
+        DBG("Stopped");
+    };
+    
+    recordToolbar_->onTempoChanged = [](double bpm) {
+        DBG("Tempo changed to: " << bpm);
+    };
+    
+    // Create Library Browser Panel (NEW - Panel lateral de biblioteca)
+    libraryPanel_ = std::make_unique<OmegaStudio::GUI::LibraryBrowserPanel>();
+    addAndMakeVisible(libraryPanel_.get());
+    DBG("✓ LibraryBrowserPanel created and added");
+    
+    libraryPanel_->onFileDropped = [](const juce::File& file) {
+        DBG("File dropped: " << file.getFullPathName());
+        // TODO: Cargar sample al channel rack
+    };
+    
+    libraryPanel_->onSampleSelected = [](const juce::String& path) {
+        DBG("Sample selected: " << path);
+    };
+    
+    // Create Mixer Channels Panel (NEW - Canales de mixer)
+    mixerPanel_ = std::make_unique<OmegaStudio::GUI::MixerChannelsPanel>(8);
+    addAndMakeVisible(mixerPanel_.get());
+    DBG("✓ MixerChannelsPanel created and added with 8 channels");
+    
     // Create TransportBar
     transportBar = std::make_unique<OmegaStudio::GUI::TransportBar>();
     addAndMakeVisible(transportBar.get());
     
-    transportBar->onPlayStateChanged = [this](bool playing) {
+    // IMPORTANTE: Añadir ChannelRack AL FINAL para que no tape los paneles
+    addAndMakeVisible(*channelRackUI_);
+    DBG("✓ ChannelRackUI added (after panels for correct z-order)");
+    
+    transportBar->onPlayStateChanged = [](bool /*playing*/) {
         // Start/stop playback
     };
     
-    transportBar->onRecordStateChanged = [this](bool recording) {
+    transportBar->onRecordStateChanged = [](bool /*recording*/) {
         // Toggle recording
     };
     
@@ -42,7 +97,7 @@ MainComponent::MainComponent(Audio::AudioEngine* audioEngine)
     // Setup project change callback
     projectManager.onProjectChanged = [this]() {
         projectModified_ = true;
-        numTracks_ = projectManager.getProjectData().tracks.size();
+        numTracks_ = (int)projectManager.getProjectData().tracks.size();
         repaint();
     };
     
@@ -67,162 +122,80 @@ MainComponent::MainComponent(Audio::AudioEngine* audioEngine)
 //==============================================================================
 MainComponent::~MainComponent() {
     stopTimer();
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void MainComponent::paint(juce::Graphics& g) {
-    // Modern dark theme
-    g.fillAll(juce::Colour(0xff1a1a1a));
+    // FL Studio-style dark background
+    g.fillAll(FLColors::DarkBg);
     
-    // Title
-    g.setColour(juce::Colours::white);
-    g.setFont(juce::Font(48.0f, juce::Font::bold));
-    g.drawText("OMEGA STUDIO", getLocalBounds().reduced(20),
-               juce::Justification::centredTop, true);
+    // Top menu bar background
+    auto menuBounds = getLocalBounds().removeFromTop(30);
+    g.setColour(FLColors::PanelBg);
+    g.fillRect(menuBounds);
     
-    // Subtitle
-    g.setFont(juce::Font(24.0f));
-    g.setColour(juce::Colour(0xff00d4ff));  // Cyan accent
-    g.drawText("Next-Generation Digital Audio Workstation",
-               getLocalBounds().reduced(20).withTrimmedTop(80),
-               juce::Justification::centredTop, true);
+    // Logo/Title
+    g.setColour(FLColors::Orange);
+    g.setFont(juce::FontOptions(16.0f, juce::Font::bold));
+    g.drawText("FRUTILLA STUDIO", menuBounds.reduced(10, 0),
+               juce::Justification::centredLeft, false);
     
-    // Status info
-    g.setFont(juce::Font(16.0f));
-    g.setColour(juce::Colours::lightgrey);
-    
-    int yPos = 200;
-    const int lineHeight = 30;
-    
+    // CPU Meter en la barra superior
     if (audioEngine_) {
-        // Device info
-        g.drawText("Audio Device: " + deviceName_,
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Sample rate
-        g.drawText(juce::String::formatted("Sample Rate: %.1f Hz", sampleRate_),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Buffer size
-        g.drawText(juce::String::formatted("Buffer Size: %d samples (%.1f ms)",
-                                          bufferSize_,
-                                          (bufferSize_ / sampleRate_) * 1000.0),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // CPU load
         const auto cpuPercent = cpuLoad_ * 100.0;
-        auto cpuColour = cpuPercent < 50.0 ? juce::Colours::green :
-                        cpuPercent < 75.0 ? juce::Colours::orange :
-                        juce::Colours::red;
         
-        g.setColour(cpuColour);
-        g.drawText(juce::String::formatted("CPU Load: %.1f%%", cpuPercent),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Engine state
-        g.setColour(juce::Colours::lightgrey);
-        const char* stateStr = "Unknown";
-        switch (audioEngine_->getState()) {
-            case Audio::EngineState::Uninitialized: stateStr = "Uninitialized"; break;
-            case Audio::EngineState::Initialized: stateStr = "Initialized"; break;
-            case Audio::EngineState::Running: stateStr = "Running"; break;
-            case Audio::EngineState::Stopped: stateStr = "Stopped"; break;
-            case Audio::EngineState::Error: stateStr = "Error"; break;
-        }
-        g.drawText(juce::String("Engine State: ") + stateStr,
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // DAW Systems Status
-        g.setColour(juce::Colour(0xff00d4ff));
-        g.setFont(juce::Font(18.0f, juce::Font::bold));
-        g.drawText("DAW Systems Status",
-                   20, yPos + 20, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += 60;
-        
-        g.setFont(juce::Font(14.0f));
-        g.setColour(juce::Colours::lightgrey);
-        
-        // Project stats
-        g.drawText(juce::String::formatted("Project: %d tracks | Modified: %s",
-                                          numTracks_,
-                                          projectModified_ ? "Yes" : "No"),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Plugin stats
-        g.drawText(juce::String::formatted("Plugins: %d loaded | %d total scanned",
-                                          pluginManager.getLoadedPluginCount(),
-                                          pluginManager.getScannedPluginCount()),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // MIDI stats
-        g.drawText(juce::String::formatted("MIDI: %d clips | %d notes total",
-                                          midiEngine.getClipCount(),
-                                          midiEngine.getTotalNoteCount()),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Mixer stats
-        g.drawText(juce::String::formatted("Mixer: %d channels | %d buses",
-                                          mixerEngine.getChannelCount(),
-                                          mixerEngine.getBusCount()),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Automation stats
-        g.drawText(juce::String::formatted("Automation: %d parameters | %d points total",
-                                          automationManager.getParameterCount(),
-                                          automationManager.getTotalPointCount()),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // Instruments status
-        g.setColour(juce::Colour(0xff00ff88));
-        g.drawText(juce::String::formatted("Instruments: Sampler (%d samples) | Synth (4-osc) | Drums (16 pads)",
-                                          sampler->getSampleCount()),
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
-        yPos += lineHeight;
-        
-        // AI status
-        g.setColour(juce::Colour(0xffff00ff));
-        g.drawText("AI: Stem Separation | Auto-Mastering | Smart EQ | Mix Analyzer",
-                   20, yPos, getWidth() - 40, lineHeight,
-                   juce::Justification::left, true);
+        g.setColour(FLColors::TextSecondary);
+        g.setFont(12.0f);
+        auto cpuText = juce::String::formatted("CPU: %.1f%%", cpuPercent);
+        g.drawText(cpuText, menuBounds.reduced(10, 0),
+                  juce::Justification::centredRight, false);
     }
-    
-    // Footer
-    g.setFont(juce::Font(12.0f));
-    g.setColour(juce::Colour(0xff666666));
-    g.drawText("Built with JUCE & C++20 | Lock-Free Architecture | SIMD Optimized | 10,200+ Lines",
-               getLocalBounds().reduced(20).withTrimmedBottom(20),
-               juce::Justification::centredBottom, true);
 }
 
 //==============================================================================
 void MainComponent::resized() {
     auto bounds = getLocalBounds();
+    DBG("=== MainComponent::resized() called ===");
+    DBG("Total bounds: " << bounds.toString());
     
-    // TransportBar at bottom
+    // Menu bar en la parte superior (30px)
+    bounds.removeFromTop(30);
+    
+    // Record Toolbar (panel superior de grabación) - 75px
+    if (recordToolbar_) {
+        auto toolbarBounds = bounds.removeFromTop(75);
+        recordToolbar_->setBounds(toolbarBounds);
+        DBG("RecordToolbar bounds: " << toolbarBounds.toString());
+    }
+    
+    // TransportBar at bottom (60px)
+    auto transportBounds = bounds.removeFromBottom(60);
     if (transportBar) {
-        transportBar->setBounds(bounds.removeFromBottom(50));
+        transportBar->setBounds(transportBounds);
+        DBG("TransportBar bounds: " << transportBounds.toString());
+    }
+    
+    // Library Browser Panel (panel lateral izquierdo) - 250px
+    juce::Rectangle<int> libraryBounds;
+    if (libraryPanel_ && showBrowserPanel_) {
+        libraryBounds = bounds.removeFromLeft(250);
+        libraryPanel_->setBounds(libraryBounds);
+        DBG("LibraryPanel bounds: " << libraryBounds.toString());
+    }
+    
+    // Mixer Channels Panel (panel lateral derecho) - 300px o más
+    juce::Rectangle<int> mixerBounds;
+    if (mixerPanel_ && showMixerPanel_) {
+        mixerBounds = bounds.removeFromRight(juce::jmin(bounds.getWidth() / 2, 640));
+        mixerPanel_->setBounds(mixerBounds);
+        DBG("MixerPanel bounds: " << mixerBounds.toString());
+    }
+    
+    // Channel Rack ocupa el resto del espacio central
+    if (channelRackUI_) {
+        channelRackUI_->setBounds(bounds);
+        DBG("ChannelRack bounds: " << bounds.toString());
     }
 }
 

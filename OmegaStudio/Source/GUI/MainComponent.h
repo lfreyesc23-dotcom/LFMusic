@@ -27,6 +27,12 @@
 #include "MacroPanelComponent.h"
 #include "StemSeparatorUI.h"
 #include "SmartMixingAssistantUI.h"
+#include "FLStudioLookAndFeel.h"
+#include "ChannelRackUI.h"
+#include "FLStudioMainWindow.h"
+#include "RecordToolbar.h"
+#include "LibraryBrowserPanel.h"
+#include "MixerChannelsPanel.h"
 
 namespace Omega {
 namespace Audio { class AudioEngine; }
@@ -98,9 +104,21 @@ private:
     
     // AI Features
     std::unique_ptr<OmegaStudio::StemSeparator> stemSeparator;
+    
+    // FL Studio-style UI Components
+    FLStudioLookAndFeel flLookAndFeel_;
+    std::unique_ptr<ChannelRackUI> channelRackUI_;
+    std::unique_ptr<OmegaStudio::Sequencer::ChannelRackEngine> channelRackEngine_;
     std::unique_ptr<OmegaStudio::MasteringAssistant> masteringAssistant;
     std::unique_ptr<OmegaStudio::SmartEQ> smartEQ;
     std::unique_ptr<OmegaStudio::MixAnalyzer> mixAnalyzer;
+    
+    // New FL Studio 2025 style panels
+    std::unique_ptr<OmegaStudio::GUI::RecordToolbar> recordToolbar_;
+    std::unique_ptr<OmegaStudio::GUI::LibraryBrowserPanel> libraryPanel_;
+    std::unique_ptr<OmegaStudio::GUI::MixerChannelsPanel> mixerPanel_;
+    bool showBrowserPanel_{true};
+    bool showMixerPanel_{true};
     
     // GUI Windows (FL Studio style)
     std::unique_ptr<OmegaStudio::GUI::PianoRollWindow> pianoRollWindow;

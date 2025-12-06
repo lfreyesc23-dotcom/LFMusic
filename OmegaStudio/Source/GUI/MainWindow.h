@@ -1,6 +1,6 @@
 //==============================================================================
 // MainWindow.h
-// Main application window
+// Main application window - FL STUDIO 2025 INTERFACE
 //==============================================================================
 
 #pragma once
@@ -9,12 +9,15 @@
 
 namespace Omega {
 namespace Audio { class AudioEngine; }
-namespace GUI { class MainComponent; }
+namespace GUI { 
+    class MainComponent; 
+    class FLStudio2025MainWindow;
+}
 
 namespace GUI {
 
 //==============================================================================
-// MainWindow
+// MainWindow - NOW WITH FL STUDIO 2025 INTERFACE
 //==============================================================================
 class MainWindow : public juce::DocumentWindow {
 public:
@@ -24,7 +27,7 @@ public:
     void closeButtonPressed() override;
     
 private:
-    MainComponent* mainComponent_;  // Owned by DocumentWindow via setContentOwned
+    FLStudio2025MainWindow* flStudioInterface_;  // NEW: FL Studio 2025 interface
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 };
