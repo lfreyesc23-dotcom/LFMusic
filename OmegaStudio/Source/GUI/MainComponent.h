@@ -13,6 +13,20 @@
 #include "../Sequencer/Automation/AutomationSystem.h"
 #include "../Audio/Instruments/Instruments.h"
 #include "../Audio/AI/AdvancedAI.h"
+#include "PianoRollEditor.h"
+#include "MixerEditor.h"
+#include "PlaylistEditor.h"
+#include "PluginWindowManager.h"
+#include "TransportBar.h"
+#include "ChannelRackEditor.h"
+#include "BrowserComponent.h"
+#include "AutomationEditor.h"
+#include "ThemeManager.h"
+#include "AudioEditorWindow.h"
+#include "PerformanceModeWindow.h"
+#include "MacroPanelComponent.h"
+#include "StemSeparatorUI.h"
+#include "SmartMixingAssistantUI.h"
 
 namespace Omega {
 namespace Audio { class AudioEngine; }
@@ -43,6 +57,22 @@ public:
     OmegaStudio::MixerEngine& getMixerEngine() { return mixerEngine; }
     OmegaStudio::AutomationManager& getAutomationManager() { return automationManager; }
     
+    //==========================================================================
+    // Window management
+    //==========================================================================
+    void showPianoRoll();
+    void showMixer();
+    void showPlaylist();
+    void showChannelRack();
+    void showBrowser();
+    void showAudioEditor();
+    void showPerformanceMode();
+    void showMacroPanel();
+    void showStemSeparator();
+    void showSmartMixingAssistant();
+    
+    bool keyPressed(const juce::KeyPress& key) override;
+    
 private:
     //==========================================================================
     // Timer callback (for CPU meter updates, etc.)
@@ -71,6 +101,20 @@ private:
     std::unique_ptr<OmegaStudio::MasteringAssistant> masteringAssistant;
     std::unique_ptr<OmegaStudio::SmartEQ> smartEQ;
     std::unique_ptr<OmegaStudio::MixAnalyzer> mixAnalyzer;
+    
+    // GUI Windows (FL Studio style)
+    std::unique_ptr<OmegaStudio::GUI::PianoRollWindow> pianoRollWindow;
+    std::unique_ptr<OmegaStudio::GUI::MixerWindow> mixerWindow;
+    std::unique_ptr<OmegaStudio::GUI::PlaylistWindow> playlistWindow;
+    std::unique_ptr<OmegaStudio::GUI::ChannelRackWindow> channelRackWindow;
+    std::unique_ptr<OmegaStudio::GUI::BrowserWindow> browserWindow;
+    std::unique_ptr<OmegaStudio::GUI::AutomationWindow> automationWindow;
+    std::unique_ptr<OmegaStudio::GUI::AudioEditorWindow> audioEditorWindow;
+    std::unique_ptr<OmegaStudio::GUI::PerformanceModeWindow> performanceModeWindow;
+    std::unique_ptr<OmegaStudio::GUI::TransportBar> transportBar;
+    std::unique_ptr<OmegaStudio::GUI::MacroPanelComponent> macroPanel;
+    std::unique_ptr<OmegaStudio::GUI::StemSeparatorWindow> stemSeparatorWindow;
+    std::unique_ptr<OmegaStudio::GUI::SmartMixingAssistantWindow> smartMixingAssistantWindow;
     
     // UI State
     double cpuLoad_{0.0};

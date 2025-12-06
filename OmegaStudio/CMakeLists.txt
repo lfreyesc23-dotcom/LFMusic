@@ -194,6 +194,31 @@ target_sources(OmegaStudio PRIVATE
     Source/GUI/MainComponent.cpp
     Source/GUI/ProcessorPanels.h
     Source/GUI/ProcessorPanels.cpp
+    Source/GUI/PianoRollEditor.h
+    Source/GUI/PianoRollEditor.cpp
+    Source/GUI/MixerEditor.h
+    Source/GUI/MixerEditor.cpp
+    Source/GUI/PlaylistEditor.h
+    Source/GUI/PlaylistEditor.cpp
+    Source/GUI/PluginWindowManager.h
+    Source/GUI/PluginWindowManager.cpp
+    Source/GUI/TransportBar.h
+    
+    # NEW GUI Components - FL Studio Killer
+    Source/GUI/ChannelRackEditor.h
+    Source/GUI/BrowserComponent.h
+    Source/GUI/AutomationEditor.h
+    Source/GUI/WaveformRenderer.h
+    Source/GUI/WavetableSynthUI.h
+    Source/GUI/FMSynthUI.h
+    Source/GUI/DrumMachineUI.h
+    Source/GUI/EffectUIs.h
+    Source/GUI/ThemeManager.h
+    Source/GUI/AudioEditorWindow.h
+    Source/GUI/PerformanceModeWindow.h
+    Source/GUI/MacroPanelComponent.h
+    Source/GUI/StemSeparatorUI.h
+    Source/GUI/SmartMixingAssistantUI.h
     
     # Utils
     Source/Utils/Constants.h

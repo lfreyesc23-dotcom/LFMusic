@@ -25,6 +25,20 @@ MainComponent::MainComponent(Audio::AudioEngine* audioEngine)
     smartEQ = std::make_unique<OmegaStudio::SmartEQ>();
     mixAnalyzer = std::make_unique<OmegaStudio::MixAnalyzer>();
     
+    // Create TransportBar
+    transportBar = std::make_unique<OmegaStudio::GUI::TransportBar>();
+    addAndMakeVisible(transportBar.get());
+    
+    transportBar->onPlayStateChanged = [this](bool playing) {
+        // Start/stop playback
+    };
+    
+    transportBar->onRecordStateChanged = [this](bool recording) {
+        // Toggle recording
+    };
+    
+    setWantsKeyboardFocus(true);
+    
     // Setup project change callback
     projectManager.onProjectChanged = [this]() {
         projectModified_ = true;
@@ -204,7 +218,154 @@ void MainComponent::paint(juce::Graphics& g) {
 
 //==============================================================================
 void MainComponent::resized() {
-    // Layout child components here when we have them
+    auto bounds = getLocalBounds();
+    
+    // TransportBar at bottom
+    if (transportBar) {
+        transportBar->setBounds(bounds.removeFromBottom(50));
+    }
+}
+
+//==============================================================================
+void MainComponent::showPianoRoll() {
+    if (!pianoRollWindow) {
+        pianoRollWindow = std::make_unique<OmegaStudio::GUI::PianoRollWindow>("Piano Roll");
+    }
+    pianoRollWindow->setVisible(true);
+    pianoRollWindow->toFront(true);
+}
+
+void MainComponent::showMixer() {
+    if (!mixerWindow) {
+        mixerWindow = std::make_unique<OmegaStudio::GUI::MixerWindow>("Mixer");
+        if (mixerWindow->getEditor()) {
+            mixerWindow->getEditor()->setMixerEngine(&mixerEngine);
+        }
+    }
+    mixerWindow->setVisible(true);
+    mixerWindow->toFront(true);
+}
+
+void MainComponent::showPlaylist() {
+    if (!playlistWindow) {
+        playlistWindow = std::make_unique<OmegaStudio::GUI::PlaylistWindow>("Playlist");
+    }
+    playlistWindow->setVisible(true);
+    playlistWindow->toFront(true);
+}
+
+void MainComponent::showChannelRack() {
+    if (!channelRackWindow) {
+        channelRackWindow = std::make_unique<OmegaStudio::GUI::ChannelRackWindow>();
+    }
+    channelRackWindow->setVisible(true);
+    channelRackWindow->toFront(true);
+}
+
+void MainComponent::showBrowser() {
+    if (!browserWindow) {
+        browserWindow = std::make_unique<OmegaStudio::GUI::BrowserWindow>();
+    }
+    browserWindow->setVisible(true);
+    browserWindow->toFront(true);
+}
+
+void MainComponent::showAudioEditor() {
+    if (!audioEditorWindow) {
+        audioEditorWindow = std::make_unique<OmegaStudio::GUI::AudioEditorWindow>();
+    }
+    audioEditorWindow->setVisible(true);
+    audioEditorWindow->toFront(true);
+}
+
+void MainComponent::showPerformanceMode() {
+    if (!performanceModeWindow) {
+        performanceModeWindow = std::make_unique<OmegaStudio::GUI::PerformanceModeWindow>();
+    }
+    performanceModeWindow->setVisible(true);
+    performanceModeWindow->toFront(true);
+}
+
+void MainComponent::showMacroPanel() {
+    if (!macroPanel) {
+        macroPanel = std::make_unique<OmegaStudio::GUI::MacroPanelComponent>();
+        addAndMakeVisible(macroPanel.get());
+        resized(); // Trigger layout update
+    }
+    macroPanel->setVisible(!macroPanel->isVisible());
+}
+
+void MainComponent::showStemSeparator() {
+    if (!stemSeparatorWindow) {
+        stemSeparatorWindow = std::make_unique<OmegaStudio::GUI::StemSeparatorWindow>();
+    }
+    stemSeparatorWindow->setVisible(true);
+    stemSeparatorWindow->toFront(true);
+}
+
+void MainComponent::showSmartMixingAssistant() {
+    if (!smartMixingAssistantWindow) {
+        smartMixingAssistantWindow = std::make_unique<OmegaStudio::GUI::SmartMixingAssistantWindow>();
+    }
+    smartMixingAssistantWindow->setVisible(true);
+    smartMixingAssistantWindow->toFront(true);
+}
+
+bool MainComponent::keyPressed(const juce::KeyPress& key) {
+    // F5 = Playlist
+    if (key.getKeyCode() == juce::KeyPress::F5Key) {
+        showPlaylist();
+        return true;
+    }
+    // F6 = Channel Rack
+    else if (key.getKeyCode() == juce::KeyPress::F6Key) {
+        showChannelRack();
+        return true;
+    }
+    // F7 = Piano Roll
+    else if (key.getKeyCode() == juce::KeyPress::F7Key) {
+        showPianoRoll();
+        return true;
+    }
+    // F8 = Browser
+    else if (key.getKeyCode() == juce::KeyPress::F8Key) {
+        showBrowser();
+        return true;
+    }
+    // F9 = Mixer
+    else if (key.getKeyCode() == juce::KeyPress::F9Key) {
+        showMixer();
+        return true;
+    }
+    // F10 = Audio Editor (Edison)
+    else if (key.getKeyCode() == juce::KeyPress::F10Key) {
+        showAudioEditor();
+        return true;
+    }
+    // F11 = Performance Mode
+    else if (key.getKeyCode() == juce::KeyPress::F11Key) {
+        showPerformanceMode();
+        return true;
+    }
+    // F12 = Macro Panel
+    else if (key.getKeyCode() == juce::KeyPress::F12Key) {
+        showMacroPanel();
+        return true;
+    }
+    // Ctrl+Shift+S = Stem Separator
+    else if (key.getModifiers().isCommandDown() && key.getModifiers().isShiftDown() && 
+             key.getKeyCode() == 'S') {
+        showStemSeparator();
+        return true;
+    }
+    // Ctrl+Shift+M = Smart Mixing Assistant
+    else if (key.getModifiers().isCommandDown() && key.getModifiers().isShiftDown() && 
+             key.getKeyCode() == 'M') {
+        showSmartMixingAssistant();
+        return true;
+    }
+    
+    return false;
 }
 
 //==============================================================================

@@ -21,7 +21,7 @@ enum class Scale {
     Mixolydian,
     Pentatonic,
     Blues,
-    Whole Tone,
+    WholeTone,
     Diminished
 };
 
@@ -200,7 +200,12 @@ public:
                 break;
             case Pattern::Random:
                 sequence = extended;
-                std::random_shuffle(sequence.begin(), sequence.end());
+                {
+                    juce::Random rng;
+                    for (size_t i = sequence.size() - 1; i > 0; --i) {
+                        std::swap(sequence[i], sequence[rng.nextInt((int)(i + 1))]);
+                    }
+                }
                 break;
             default:
                 sequence = extended;
