@@ -15,6 +15,8 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <queue>
+#include <optional>
 #include "../Engine/AudioEngine.h"
 
 namespace Omega::Audio {
@@ -72,6 +74,9 @@ public:
     [[nodiscard]] bool disconnect(NodeID sourceId, int sourceChannel,
                                   NodeID destId, int destChannel);
     [[nodiscard]] bool isConnected(NodeID sourceId, NodeID destId) const;
+
+    void setInputNodeId(NodeID id) noexcept { inputNodeId_ = id; }
+    void setOutputNodeId(NodeID id) noexcept { outputNodeId_ = id; }
     
     //==========================================================================
     // Graph Processing (called from audio callback)
@@ -100,7 +105,19 @@ private:
     //==========================================================================
     std::unordered_map<NodeID, std::unique_ptr<AudioNode>> nodes_;
     std::vector<std::unique_ptr<AudioConnection>> connections_;
+    std::unordered_map<NodeID, std::vector<AudioConnection>> adjacency_;
     std::vector<NodeID> processingOrder_;  // Topologically sorted
+
+    juce::AudioBuffer<float> scratchBuffer_;
+    int scratchChannels_ { 0 };
+    int scratchBlockSize_ { 0 };
+
+    NodeID inputNodeId_ { INVALID_NODE_ID };
+    NodeID outputNodeId_ { INVALID_NODE_ID };
+
+    std::unordered_map<NodeID, juce::AudioBuffer<float>> nodeBuffers_;
+    std::unordered_map<NodeID, std::vector<float>> delayLines_;
+    std::unordered_map<NodeID, size_t> delayIndices_;
     
     NodeID nextNodeId_{1};
     int totalLatency_{0};
@@ -110,6 +127,12 @@ private:
     //==========================================================================
     void rebuildProcessingOrder();
     [[nodiscard]] bool detectCycle(NodeID startNode) const;
+    [[nodiscard]] bool hasNode(NodeID nodeId) const noexcept;
+    [[nodiscard]] bool connectionExists(NodeID sourceId, int sourceChannel,
+                                        NodeID destId, int destChannel) const;
+    void ensureScratchBuffer(int channels, int numSamples);
+    juce::AudioBuffer<float>& ensureNodeBuffer(NodeID id, int channels, int numSamples);
+    void applyLatency(NodeID id, juce::AudioBuffer<float>& buffer, int latencySamples);
 };
 
 } // namespace Omega::Audio

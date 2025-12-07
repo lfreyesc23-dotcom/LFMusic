@@ -2,6 +2,10 @@
 #include <JuceHeader.h>
 #include <vector>
 #include <map>
+#include <atomic>
+#include <array>
+#include <cstring>
+#include "../Memory/LockFreeFIFO.h"
 
 namespace OmegaStudio {
 namespace MIDI {
@@ -266,6 +270,32 @@ class MIDIManager
 public:
     MIDIManager();
     ~MIDIManager();
+
+    // RT-safe MIDI event
+    struct RTEvent {
+        std::array<uint8_t, 64> bytes{}; // Fits common MIDI msgs; SysEx truncated if larger
+        uint8_t size { 0 };
+        int samplePosition { 0 }; // position within current block
+        bool isSysEx { false };
+
+        static RTEvent fromMessage(const juce::MidiMessage& msg, int samplePos = 0) {
+            RTEvent ev;
+            const int msgSize = juce::jmin<int>(static_cast<int>(msg.getRawDataSize()), static_cast<int>(ev.bytes.size()));
+            std::memcpy(ev.bytes.data(), msg.getRawData(), static_cast<size_t>(msgSize));
+            ev.size = static_cast<uint8_t>(msgSize);
+            ev.samplePosition = samplePos;
+            ev.isSysEx = msg.isSysEx();
+            return ev;
+        }
+
+        juce::MidiMessage toMessage() const {
+            return juce::MidiMessage(bytes.data(), static_cast<int>(size));
+        }
+    };
+
+    // Lock-free queues (audio thread consumes)
+    Memory::LockFreeFIFO<RTEvent, 1024>& getInputQueue() { return inputQueue; }
+    Memory::LockFreeFIFO<RTEvent, 1024>& getOutputQueue() { return outputQueue; }
     
     // MIDI Out
     MIDIOut* getMIDIOut() { return midiOut.get(); }
@@ -298,6 +328,9 @@ private:
     
     bool midiLearnActive = false;
     juce::String midiLearnTarget;
+
+    Memory::LockFreeFIFO<RTEvent, 1024> inputQueue;   // GUI → Audio (scripted)
+    Memory::LockFreeFIFO<RTEvent, 1024> outputQueue;  // Audio → GUI / hardware send
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MIDIManager)
 };

@@ -5,7 +5,9 @@
 
 #include "AudioEngine.h"
 #include "../Graph/AudioGraph.h"
+#include "../Graph/ProcessorNodes.h"
 #include "../Recording/AudioRecorder.h"
+#include "../Plugins/PluginManager.h"
 #include <juce_audio_devices/juce_audio_devices.h>
 
 namespace Omega::Audio {
@@ -41,8 +43,19 @@ bool AudioEngine::initialize(const AudioEngineConfig& config) {
         Memory::POOL_BLOCK_SIZE
     );
     
-    // Initialize audio graph (placeholder for now)
+    // Initialize audio graph and core nodes
     audioGraph_ = std::make_unique<AudioGraph>();
+    mixerEngine_ = std::make_unique<OmegaStudio::MixerEngine>();
+
+    inputNodeId_ = audioGraph_->addNode(std::make_unique<InputNode>(config_.numInputChannels));
+    pluginNodeId_ = audioGraph_->addNode(std::make_unique<PluginNode>());
+    mixerNodeId_ = audioGraph_->addNode(std::make_unique<MixerNode>(*mixerEngine_));
+    outputNodeId_ = audioGraph_->addNode(std::make_unique<OutputNode>(config_.numOutputChannels));
+    audioGraph_->setInputNodeId(inputNodeId_);
+    audioGraph_->setOutputNodeId(outputNodeId_);
+    audioGraph_->connect(inputNodeId_, 0, pluginNodeId_, 0);
+    audioGraph_->connect(pluginNodeId_, 0, mixerNodeId_, 0);
+    audioGraph_->connect(mixerNodeId_, 0, outputNodeId_, 0);
 
     // Initialize recorder
     recorder_ = std::make_unique<omega::AudioRecorder>();
@@ -197,9 +210,37 @@ void AudioEngine::audioDeviceIOCallbackWithContext(
         return;
     }
     
-    // Process audio graph (when implemented)
-    // audioGraph_->process(inputChannelData, numInputChannels,
-    //                      outputChannelData, numOutputChannels, numSamples);
+    // Pull MIDI events from RT queue into buffer
+    pumpMIDIInput(numSamples);
+
+    // Set external buffers for IO nodes (if present)
+    if (audioGraph_) {
+        if (auto* inNode = dynamic_cast<InputNode*>(audioGraph_->getNode(inputNodeId_))) {
+            inNode->setExternalInput(inputChannelData, numInputChannels, numSamples);
+        }
+        if (auto* outNode = dynamic_cast<OutputNode*>(audioGraph_->getNode(outputNodeId_))) {
+            outNode->setExternalOutput(outputChannelData, numOutputChannels, numSamples);
+        }
+        if (auto* pNode = dynamic_cast<PluginNode*>(audioGraph_->getNode(pluginNodeId_))) {
+            pNode->setMidiBuffer(&audioThreadMidi_);
+        }
+        if (auto* mNode = dynamic_cast<MixerNode*>(audioGraph_->getNode(mixerNodeId_))) {
+            // Ensure one channel buffer and midi buffer for the mixer
+            if (channelBuffersStorage_.size() < 1) channelBuffersStorage_.resize(1);
+            channelBuffersStorage_[0].setSize(numOutputChannels, numSamples, false, false, true);
+            channelBufferPtrs_.clear();
+            channelBufferPtrs_.push_back(&channelBuffersStorage_[0]);
+
+            midiBufferPtrs_.clear();
+            midiBufferPtrs_.push_back(&audioThreadMidi_);
+
+            mNode->setChannelBuffers(&channelBufferPtrs_);
+            mNode->setMidiBuffers(&midiBufferPtrs_);
+        }
+
+        audioGraph_->process(inputChannelData, numInputChannels,
+                             outputChannelData, numOutputChannels, numSamples);
+    }
 
     // Record incoming audio if armed/recording
     if (recorder_ && recorder_->isRecording()) {
@@ -261,6 +302,8 @@ void AudioEngine::audioDeviceAboutToStart(juce::AudioIODevice* device) {
     );
     
     reset();
+
+    prepareGraph(device->getCurrentSampleRate(), device->getCurrentBufferSizeSamples());
 
     if (recorder_) {
         recorder_->initialize(device->getCurrentSampleRate());
@@ -366,6 +409,64 @@ void AudioEngine::updateCpuLoad(double load) {
 
 bool AudioEngine::validateConfig(const AudioEngineConfig& config) const {
     return config.isValid();
+}
+
+void AudioEngine::pumpMIDIInput(int numSamples) {
+    audioThreadMidi_.clear();
+    if (!midiManager_) return;
+
+    auto& inQueue = midiManager_->getInputQueue();
+    auto& outQueue = midiManager_->getOutputQueue();
+
+    while (true) {
+        auto evOpt = inQueue.pop();
+        if (!evOpt.has_value()) break;
+
+        auto ev = evOpt.value();
+        const int pos = juce::jlimit(0, juce::jmax(0, numSamples - 1), ev.samplePosition);
+        audioThreadMidi_.addEvent(ev.toMessage(), pos);
+
+        // Echo to output queue for GUI/hardware feedback (non-blocking)
+        outQueue.push(ev);
+    }
+}
+
+void AudioEngine::prepareGraph(double sampleRate, int blockSize) {
+    if (!audioGraph_) return;
+
+    for (NodeID id : {inputNodeId_, pluginNodeId_, mixerNodeId_, outputNodeId_}) {
+        if (auto* node = audioGraph_->getNode(id)) {
+            node->prepare(sampleRate, blockSize);
+        }
+    }
+
+    if (mixerEngine_) {
+        mixerEngine_->prepareToPlay(sampleRate, blockSize);
+    }
+}
+
+bool AudioEngine::addPluginToGraph(const juce::String& pluginUID) {
+    if (!audioGraph_) return false;
+    auto* pNode = dynamic_cast<PluginNode*>(audioGraph_->getNode(pluginNodeId_));
+    if (!pNode) return false;
+
+    auto plugin = OmegaStudio::PluginManager::getInstance().loadPlugin(pluginUID);
+    if (!plugin) return false;
+
+    pNode->chain().clearPlugins();
+    pNode->chain().addPlugin(std::move(plugin));
+    // Recompute latency on graph
+    audioGraph_->updateLatencyCompensation();
+    return true;
+}
+
+bool AudioEngine::clearGraphPlugins() {
+    if (!audioGraph_) return false;
+    auto* pNode = dynamic_cast<PluginNode*>(audioGraph_->getNode(pluginNodeId_));
+    if (!pNode) return false;
+    pNode->chain().clearPlugins();
+    audioGraph_->updateLatencyCompensation();
+    return true;
 }
 
 } // namespace Omega::Audio

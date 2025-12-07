@@ -18,6 +18,11 @@
 #include "../../Memory/LockFreeFIFO.h"
 #include "../../Utils/Constants.h"
 #include "../../Utils/Atomic.h"
+#include "../Graph/AudioGraph.h"
+#include "../Graph/ProcessorNodes.h"
+#include "../../MIDI/MIDIAdvanced.h"
+#include "../Plugins/PluginManager.h"
+#include "../Mixer/MixerEngine.h"
 
 // Forward declaration of recorder (namespace omega)
 namespace omega { class AudioRecorder; }
@@ -120,6 +125,13 @@ public:
     [[nodiscard]] AudioGraph* getAudioGraph() noexcept;
     [[nodiscard]] const AudioGraph* getAudioGraph() const noexcept;
 
+    // Plugin helpers (convenience wrappers)
+    bool addPluginToGraph(const juce::String& pluginUID);
+    bool clearGraphPlugins();
+
+    // MIDI Manager attachment (for RT queues)
+    void attachMIDIManager(OmegaStudio::MIDI::MIDIManager* manager) noexcept { midiManager_ = manager; }
+
     //=========================================================================
     // Recording Control (simple arm/record toggle for now)
     //=========================================================================
@@ -156,8 +168,13 @@ private:
     //==========================================================================
     std::unique_ptr<juce::AudioDeviceManager> deviceManager_;
     std::unique_ptr<AudioGraph> audioGraph_;
+    NodeID inputNodeId_{INVALID_NODE_ID};
+    NodeID outputNodeId_{INVALID_NODE_ID};
+    NodeID pluginNodeId_{INVALID_NODE_ID};
+    NodeID mixerNodeId_{INVALID_NODE_ID};
     std::unique_ptr<Memory::MemoryPool> audioMemoryPool_;
     std::unique_ptr<omega::AudioRecorder> recorder_;
+    std::unique_ptr<OmegaStudio::MixerEngine> mixerEngine_;
     
     //==========================================================================
     // Configuration
@@ -182,6 +199,11 @@ private:
     // Communication Channels
     //==========================================================================
     Memory::MessageFIFO messageQueue_;  // Audio → GUI messages
+    juce::MidiBuffer audioThreadMidi_;
+    OmegaStudio::MIDI::MIDIManager* midiManager_ { nullptr }; // non-owning
+    std::vector<juce::AudioBuffer<float>> channelBuffersStorage_;
+    std::vector<juce::AudioBuffer<float>*> channelBufferPtrs_;
+    std::vector<juce::MidiBuffer*> midiBufferPtrs_;
     
     //==========================================================================
     // Performance Monitoring
@@ -196,6 +218,8 @@ private:
     void setError(const juce::String& error);
     void updateCpuLoad(double load);
     [[nodiscard]] bool validateConfig(const AudioEngineConfig& config) const;
+    void prepareGraph(double sampleRate, int blockSize);
+    void pumpMIDIInput(int numSamples);
 };
 
 } // namespace Omega::Audio
