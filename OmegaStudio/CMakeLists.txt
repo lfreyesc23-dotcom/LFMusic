@@ -13,6 +13,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Export compile commands for IDE integration
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+option(ENABLE_ORT "Enable ONNX Runtime for AI features" OFF)
+
 # ============================================================================
 # JUCE FRAMEWORK INTEGRATION
 # ============================================================================
@@ -181,6 +183,15 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/AI/VocalEnhancer.cpp
     Source/Audio/AI/AIFeatures.h
     Source/Audio/AI/AIFeatures.cpp
+    Source/Audio/AI/OnnxRuntimeWrapper.h
+    Source/Audio/AI/OnnxRuntimeWrapper.cpp
+
+    # Workflow integrations
+    Source/Workflow/LoopStarterIntegration.h
+    Source/Workflow/GopherCommands.h
+
+    # Tests
+    Source/Tests/StemSeparationTests.cpp
     
     # Memory Management
     Source/Memory/MemoryPool.h
@@ -421,6 +432,14 @@ target_sources(OmegaStudio PRIVATE
     # FASE 3: Creative Effects
     Source/Audio/Effects/CreativeEffects.h
     Source/Audio/Effects/CreativeEffects.cpp
+    Source/Audio/Effects/PremiumFX.h
+    Source/Audio/Effects/PremiumFX.cpp
+
+    # Remote / Mobile
+    Source/Remote/RemoteServer.h
+    Source/Remote/RemoteServer.cpp
+    Source/Remote/RemoteAPI.h
+    Source/Mobile/MobileRackBridge.h
     
     # FASE 4: Performance Manager
     Source/Performance/PerformanceManager.h
@@ -480,6 +499,23 @@ target_link_libraries(OmegaStudio PRIVATE
 target_include_directories(OmegaStudio PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Source
 )
+
+# Optional ONNX Runtime integration (disabled by default)
+if(ENABLE_ORT)
+    find_path(ONNXRUNTIME_INCLUDE_DIR onnxruntime_c_api.h
+        HINTS $ENV{ONNXRUNTIME_DIR}/include /usr/local/include /opt/homebrew/include /opt/local/include)
+    find_library(ONNXRUNTIME_LIB NAMES onnxruntime onnxruntime.lib
+        HINTS $ENV{ONNXRUNTIME_DIR}/lib $ENV{ONNXRUNTIME_DIR}/lib64 /usr/local/lib /opt/homebrew/lib /opt/local/lib)
+
+    if(ONNXRUNTIME_INCLUDE_DIR AND ONNXRUNTIME_LIB)
+        message(STATUS "ONNX Runtime enabled: ${ONNXRUNTIME_LIB}")
+        target_compile_definitions(OmegaStudio PRIVATE ENABLE_ORT=1)
+        target_include_directories(OmegaStudio PRIVATE ${ONNXRUNTIME_INCLUDE_DIR})
+        target_link_libraries(OmegaStudio PRIVATE ${ONNXRUNTIME_LIB})
+    else()
+        message(WARNING "ENABLE_ORT=ON pero ONNX Runtime no fue encontrado; se desactiva.")
+    endif()
+endif()
 
 # ============================================================================
 # PLATFORM-SPECIFIC CONFIGURATIONS
