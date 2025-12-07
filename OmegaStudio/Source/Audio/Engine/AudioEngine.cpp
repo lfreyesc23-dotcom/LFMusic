@@ -5,6 +5,7 @@
 
 #include "AudioEngine.h"
 #include "../Graph/AudioGraph.h"
+#include "../Recording/AudioRecorder.h"
 #include <juce_audio_devices/juce_audio_devices.h>
 
 namespace Omega::Audio {
@@ -42,6 +43,9 @@ bool AudioEngine::initialize(const AudioEngineConfig& config) {
     
     // Initialize audio graph (placeholder for now)
     audioGraph_ = std::make_unique<AudioGraph>();
+
+    // Initialize recorder
+    recorder_ = std::make_unique<omega::AudioRecorder>();
     
     // Initialize JUCE audio device manager
     juce::String error = deviceManager_->initialise(
@@ -75,8 +79,10 @@ bool AudioEngine::initialize(const AudioEngineConfig& config) {
     }
     
     // Store actual device parameters
-    currentSampleRate_.store(device->getCurrentSampleRate());
-    currentBufferSize_.store(device->getCurrentBufferSizeSamples());
+    const double deviceSampleRate = device->getCurrentSampleRate();
+    const int deviceBufferSize = device->getCurrentBufferSizeSamples();
+    currentSampleRate_.store(deviceSampleRate);
+    currentBufferSize_.store(deviceBufferSize);
     
     juce::Logger::writeToLog(
         juce::String::formatted(
@@ -90,6 +96,11 @@ bool AudioEngine::initialize(const AudioEngineConfig& config) {
     // Add this as the audio callback
     deviceManager_->addAudioCallback(this);
     
+    // Initialize recorder with actual sample rate
+    if (recorder_) {
+        recorder_->initialize(deviceSampleRate);
+    }
+
     state_.store(EngineState::Initialized, std::memory_order_release);
     return true;
 }
@@ -109,6 +120,7 @@ void AudioEngine::shutdown() {
     // Cleanup
     audioGraph_.reset();
     audioMemoryPool_.reset();
+    recorder_.reset();
     
     state_.store(EngineState::Uninitialized, std::memory_order_release);
     juce::Logger::writeToLog("AudioEngine shutdown complete");
@@ -188,6 +200,11 @@ void AudioEngine::audioDeviceIOCallbackWithContext(
     // Process audio graph (when implemented)
     // audioGraph_->process(inputChannelData, numInputChannels,
     //                      outputChannelData, numOutputChannels, numSamples);
+
+    // Record incoming audio if armed/recording
+    if (recorder_ && recorder_->isRecording()) {
+        recorder_->processAudio(inputChannelData, numInputChannels, numSamples);
+    }
     
     // For now, pass through input to output (or generate silence)
     if (numInputChannels > 0 && inputChannelData[0] != nullptr) {
@@ -244,11 +261,42 @@ void AudioEngine::audioDeviceAboutToStart(juce::AudioIODevice* device) {
     );
     
     reset();
+
+    if (recorder_) {
+        recorder_->initialize(device->getCurrentSampleRate());
+    }
 }
 
 //==============================================================================
 void AudioEngine::audioDeviceStopped() {
     juce::Logger::writeToLog("Audio device stopped");
+}
+
+//==============================================================================
+// Recording control
+//==============================================================================
+bool AudioEngine::startRecording() {
+    if (!recorder_) return false;
+    // Arm default track 0 if none armed
+    recorder_->armTrack(0);
+    return recorder_->startRecording();
+}
+
+void AudioEngine::stopRecording() {
+    if (!recorder_) return;
+    recorder_->stopRecording();
+}
+
+bool AudioEngine::isRecording() const noexcept {
+    return recorder_ && recorder_->isRecording();
+}
+
+void AudioEngine::armTrack(int trackIndex) {
+    if (recorder_) recorder_->armTrack(trackIndex);
+}
+
+void AudioEngine::disarmTrack(int trackIndex) {
+    if (recorder_) recorder_->disarmTrack(trackIndex);
 }
 
 //==============================================================================

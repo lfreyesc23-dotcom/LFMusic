@@ -9,6 +9,7 @@
 #include "FLStudioLookAndFeel.h"
 
 namespace Omega {
+namespace Audio { class AudioEngine; }
 namespace GUI {
 
 //==============================================================================
@@ -22,6 +23,10 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
     void timerCallback() override;
+
+    void setPlaying(bool isPlaying);
+    void setRecording(bool isRecording);
+    bool isAnyTransportButton(juce::Component* c) const { return c == playButton_.get() || c == stopButton_.get() || c == recordButton_.get(); }
     
     // Transport controls callbacks
     std::function<void(bool)> onPlay;
@@ -49,8 +54,6 @@ private:
     
     // Tempo display
     std::unique_ptr<juce::Label> tempoLabel_;
-    double currentTempo_ = 108.000;
-    
     // Time display
     std::unique_ptr<juce::Label> timeLabel_;
     
@@ -220,8 +223,6 @@ public:
     
 private:
     juce::Array<Channel> channels_;
-    int currentPattern_ = 1;
-    int stepsPerBar_ = 16;
     int visibleSteps_ = 32;
     
     // Tabs
@@ -235,13 +236,15 @@ private:
 //==============================================================================
 class FLStudio2025MainWindow : public juce::Component {
 public:
-    FLStudio2025MainWindow();
+    explicit FLStudio2025MainWindow(Audio::AudioEngine* audioEngine);
     ~FLStudio2025MainWindow() override = default;
     
     void paint(juce::Graphics& g) override;
     void resized() override;
     
 private:
+    Audio::AudioEngine* audioEngine_ = nullptr;  // Not owned
+
     // Layout
     std::unique_ptr<FLStudio2025Toolbar> toolbar_;
     std::unique_ptr<FLStudio2025PatternPanel> patternPanel_;
@@ -259,6 +262,8 @@ private:
     int patternPanelWidth_ = 200;
     int helpPanelWidth_ = 350;
     int channelRackHeight_ = 150;  // Más compacto como imagen
+
+    bool isRecording_ = false;
     
     void initializeDefaultPatterns();
     void initializeDefaultClips();

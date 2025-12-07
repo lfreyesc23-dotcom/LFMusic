@@ -4,6 +4,7 @@
 //==============================================================================
 
 #include "FLStudio2025Interface.h"
+#include "../Audio/Engine/AudioEngine.h"
 
 namespace Omega {
 namespace GUI {
@@ -12,20 +13,14 @@ namespace GUI {
 // FLStudio2025Toolbar Implementation
 //==============================================================================
 FLStudio2025Toolbar::FLStudio2025Toolbar() {
+    setInterceptsMouseClicks(true, true);
+
     // Logo FL STUDIO (grande y naranja)
     logoLabel_ = std::make_unique<juce::Label>();
     logoLabel_->setText("FL STUDIO 2025", juce::dontSendNotification);
     logoLabel_->setFont(juce::Font(15.0f, juce::Font::bold));
     logoLabel_->setColour(juce::Label::textColourId, FLColors::Orange);
     addAndMakeVisible(*logoLabel_);
-    
-    // Time display (pequeño, esquina)
-    timeLabel_ = std::make_unique<juce::Label>();
-    timeLabel_->setText("0:00:00", juce::dontSendNotification);
-    timeLabel_->setFont(juce::Font(12.0f, juce::Font::plain));
-    timeLabel_->setJustificationType(juce::Justification::centred);
-    timeLabel_->setColour(juce::Label::textColourId, FLColors::TextPrimary);
-    addAndMakeVisible(*timeLabel_);
     
     // Menu Bar
     fileButton_ = std::make_unique<juce::TextButton>("FILE");
@@ -41,18 +36,34 @@ FLStudio2025Toolbar::FLStudio2025Toolbar() {
     // Transport Controls
     playButton_ = std::make_unique<juce::TextButton>("▶");
     playButton_->setTooltip("Play/Pause (Space)");
-    playButton_->onClick = [this]() { if (onPlay) onPlay(true); };
+    playButton_->setClickingTogglesState(true);
+    playButton_->onClick = [this]() {
+        const bool isNowPlaying = playButton_->getToggleState();
+        setPlaying(isNowPlaying); // update UI immediately
+        if (onPlay) onPlay(isNowPlaying);
+        juce::Logger::writeToLog("UI: Play clicked -> " + juce::String(isNowPlaying ? "true" : "false"));
+    };
     addAndMakeVisible(*playButton_);
     
     stopButton_ = std::make_unique<juce::TextButton>("■");
     stopButton_->setTooltip("Stop");
-    stopButton_->onClick = [this]() { if (onStop) onStop(); };
+    stopButton_->onClick = [this]() {
+        if (onStop) onStop();
+        setPlaying(false);
+        juce::Logger::writeToLog("UI: Stop clicked");
+    };
     addAndMakeVisible(*stopButton_);
     
     recordButton_ = std::make_unique<juce::TextButton>("●");
     recordButton_->setTooltip("Record (Ctrl+R)");
     recordButton_->setColour(juce::TextButton::buttonColourId, FLColors::Danger);
-    recordButton_->onClick = [this]() { if (onRecord) onRecord(true); };
+    recordButton_->setClickingTogglesState(true);
+    recordButton_->onClick = [this]() {
+        const bool nowRecording = recordButton_->getToggleState();
+        setRecording(nowRecording); // update UI immediately
+        if (onRecord) onRecord(nowRecording);
+        juce::Logger::writeToLog("UI: Record clicked -> " + juce::String(nowRecording ? "true" : "false"));
+    };
     addAndMakeVisible(*recordButton_);
     
     patternButton_ = std::make_unique<juce::TextButton>("PAT");
@@ -233,6 +244,18 @@ void FLStudio2025Toolbar::timerCallback() {
     
     cpuLabel_->setText(juce::String::formatted("CPU: %.0f%%", cpuUsage_), juce::dontSendNotification);
     memoryLabel_->setText(juce::String::formatted("%d MB / 0", memoryUsage_), juce::dontSendNotification);
+}
+
+void FLStudio2025Toolbar::setPlaying(bool isPlaying) {
+    playButton_->setToggleState(isPlaying, juce::sendNotificationSync);
+    playButton_->setButtonText(isPlaying ? "❚❚" : "▶");
+}
+
+void FLStudio2025Toolbar::setRecording(bool isRecording) {
+    recordButton_->setToggleState(isRecording, juce::sendNotificationSync);
+    recordButton_->setButtonText(isRecording ? "●" : "●");
+    recordButton_->setColour(juce::TextButton::buttonColourId,
+                             isRecording ? FLColors::Danger.brighter(0.2f) : FLColors::Danger);
 }
 
 //==============================================================================
@@ -945,7 +968,8 @@ void FLStudio2025ChannelRack::toggleStep(int channelIndex, int stepIndex) {
 //==============================================================================
 // FLStudio2025MainWindow Implementation (UPDATED)
 //==============================================================================
-FLStudio2025MainWindow::FLStudio2025MainWindow() {
+FLStudio2025MainWindow::FLStudio2025MainWindow(Audio::AudioEngine* audioEngine)
+    : audioEngine_(audioEngine) {
     // Create all components
     toolbar_ = std::make_unique<FLStudio2025Toolbar>();
     addAndMakeVisible(*toolbar_);
@@ -964,16 +988,39 @@ FLStudio2025MainWindow::FLStudio2025MainWindow() {
     addAndMakeVisible(*channelRack_);
     
     // Setup callbacks
-    toolbar_->onPlay = [this](bool play) {
-        DBG("Play: " + juce::String(play));
+    toolbar_->onPlay = [this](bool shouldPlay) {
+        if (!audioEngine_) return;
+        if (shouldPlay && !audioEngine_->isRunning()) {
+            audioEngine_->start();
+        } else if (!shouldPlay && audioEngine_->isRunning()) {
+            audioEngine_->stop();
+        }
+        toolbar_->setPlaying(audioEngine_->isRunning());
+        juce::Logger::writeToLog("Engine: play state -> " + juce::String(audioEngine_->isRunning() ? "true" : "false"));
     };
-    
+
     toolbar_->onStop = [this]() {
-        DBG("Stop");
+        if (!audioEngine_) return;
+        audioEngine_->stop();
+        audioEngine_->reset();
+        toolbar_->setPlaying(false);
+        juce::Logger::writeToLog("Engine: stop");
     };
-    
-    toolbar_->onRecord = [this](bool record) {
-        DBG("Record: " + juce::String(record));
+
+    toolbar_->onRecord = [this](bool isRecord) {
+        isRecording_ = isRecord;
+        if (audioEngine_) {
+            if (isRecording_) {
+                audioEngine_->armTrack(0);
+                audioEngine_->startRecording();
+            } else {
+                audioEngine_->stopRecording();
+            }
+            toolbar_->setRecording(audioEngine_->isRecording());
+            juce::Logger::writeToLog("Engine: record state -> " + juce::String(audioEngine_->isRecording() ? "true" : "false"));
+        } else {
+            toolbar_->setRecording(isRecording_);
+        }
     };
     
     patternPanel_->onPatternSelected = [this](int index) {
@@ -1003,8 +1050,8 @@ void FLStudio2025MainWindow::resized() {
     // Toolbar (top)
     toolbar_->setBounds(bounds.removeFromTop(toolbarHeight_));
     
-    // NO channel rack en bottom - enfoque en playlist
-    // channelRack_->setBounds(bounds.removeFromBottom(channelRackHeight_));
+    // Channel rack en la parte inferior
+    channelRack_->setBounds(bounds.removeFromBottom(channelRackHeight_));
     
     // Pattern panel (left)
     patternPanel_->setBounds(bounds.removeFromLeft(patternPanelWidth_));
@@ -1012,7 +1059,7 @@ void FLStudio2025MainWindow::resized() {
     // Help panel (right)
     helpPanel_->setBounds(bounds.removeFromRight(helpPanelWidth_));
     
-    // Playlist view (center - TODO EL ESPACIO)
+    // Playlist view (center)
     playlistView_->setBounds(bounds);
 }
 

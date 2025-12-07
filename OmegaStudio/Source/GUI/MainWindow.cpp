@@ -18,7 +18,7 @@ MainWindow::MainWindow(const juce::String& name, Audio::AudioEngine* audioEngine
     setUsingNativeTitleBar(true);
     
     // Create FL Studio 2025 interface and give ownership to DocumentWindow
-    flStudioInterface_ = new FLStudio2025MainWindow();
+    flStudioInterface_ = new FLStudio2025MainWindow(audioEngine);
     setContentOwned(flStudioInterface_, true);
     
     #if JUCE_IOS || JUCE_ANDROID

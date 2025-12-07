@@ -42,6 +42,7 @@ public:
     [[nodiscard]] Audio::AudioEngine* getAudioEngine() noexcept;
     
 private:
+    std::unique_ptr<juce::FileLogger> fileLogger_;
     Audio::AudioEngine* audioEngine_ = nullptr;
     GUI::MainWindow* mainWindow_ = nullptr;
 };

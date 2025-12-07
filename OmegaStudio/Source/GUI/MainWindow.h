@@ -27,7 +27,7 @@ public:
     void closeButtonPressed() override;
     
 private:
-    FLStudio2025MainWindow* flStudioInterface_;  // NEW: FL Studio 2025 interface
+    FLStudio2025MainWindow* flStudioInterface_;  // Owned content component
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 };

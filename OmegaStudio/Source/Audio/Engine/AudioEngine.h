@@ -19,6 +19,9 @@
 #include "../../Utils/Constants.h"
 #include "../../Utils/Atomic.h"
 
+// Forward declaration of recorder (namespace omega)
+namespace omega { class AudioRecorder; }
+
 namespace Omega::Audio {
 
 //==============================================================================
@@ -116,6 +119,15 @@ public:
     //==========================================================================
     [[nodiscard]] AudioGraph* getAudioGraph() noexcept;
     [[nodiscard]] const AudioGraph* getAudioGraph() const noexcept;
+
+    //=========================================================================
+    // Recording Control (simple arm/record toggle for now)
+    //=========================================================================
+    bool startRecording();
+    void stopRecording();
+    bool isRecording() const noexcept;
+    void armTrack(int trackIndex = 0);
+    void disarmTrack(int trackIndex = 0);
     
     //==========================================================================
     // Message Communication (GUI ← Audio Thread)
@@ -145,6 +157,7 @@ private:
     std::unique_ptr<juce::AudioDeviceManager> deviceManager_;
     std::unique_ptr<AudioGraph> audioGraph_;
     std::unique_ptr<Memory::MemoryPool> audioMemoryPool_;
+    std::unique_ptr<omega::AudioRecorder> recorder_;
     
     //==========================================================================
     // Configuration

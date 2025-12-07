@@ -401,6 +401,30 @@ target_sources(OmegaStudio PRIVATE
     
     # Performance & Optimization
     Source/Performance/PerformanceSystem.h
+    
+    # ========== NEW: 4 PHASES FL STUDIO KILLER ==========
+    
+    # FASE 1: Professional Synthesizers
+    Source/Audio/Synthesis/WavetableSynth.h
+    Source/Audio/Synthesis/WavetableSynth.cpp
+    Source/Audio/Synthesis/FMSynth.h
+    Source/Audio/Synthesis/FMSynth.cpp
+    Source/Audio/Synthesis/VirtualAnalogSynth.h
+    Source/Audio/Synthesis/VirtualAnalogSynth.cpp
+    Source/Audio/Synthesis/AdvancedSampler.h
+    Source/Audio/Synthesis/AdvancedSampler.cpp
+    
+    # FASE 2: Workflow Visual
+    Source/Content/SmartBrowser.h
+    Source/Content/SmartBrowser.cpp
+    
+    # FASE 3: Creative Effects
+    Source/Audio/Effects/CreativeEffects.h
+    Source/Audio/Effects/CreativeEffects.cpp
+    
+    # FASE 4: Performance Manager
+    Source/Performance/PerformanceManager.h
+    Source/Performance/PerformanceManager.cpp
 )
 
 # ============================================================================

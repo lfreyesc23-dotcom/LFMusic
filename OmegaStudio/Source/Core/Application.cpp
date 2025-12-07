@@ -28,10 +28,17 @@ OmegaStudioApplication::~OmegaStudioApplication() {
 //==============================================================================
 void OmegaStudioApplication::initialise(const juce::String& commandLine) {
     juce::ignoreUnused(commandLine);
-    
+    // Setup file logger for debugging button callbacks
+    auto logDir = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
+                        .getChildFile("OmegaStudioLogs");
+    logDir.createDirectory();
+    auto logFile = logDir.getChildFile("OmegaStudio.log");
+    fileLogger_.reset(new juce::FileLogger(logFile, "Omega Studio Session", 0));
+    juce::Logger::setCurrentLogger(fileLogger_.get());
     juce::Logger::writeToLog("===========================================");
     juce::Logger::writeToLog("   OMEGA STUDIO - Next-Gen DAW");
     juce::Logger::writeToLog("   Version 1.0.0");
+    juce::Logger::writeToLog("   Log: " + logFile.getFullPathName());
     juce::Logger::writeToLog("===========================================");
     
     // Initialize audio engine
@@ -81,6 +88,8 @@ void OmegaStudioApplication::shutdown() {
     }
     
     juce::Logger::writeToLog("Shutdown complete");
+    juce::Logger::setCurrentLogger(nullptr);
+    fileLogger_.reset();
 }
 
 //==============================================================================
