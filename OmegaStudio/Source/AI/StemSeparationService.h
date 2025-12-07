@@ -32,10 +32,17 @@ public:
     };
 
     struct ProcessingOptions {
-        int modelQuality = 3;  // 1-5, higher = better quality
-        bool useTwoPass = true;
-        bool normalizeOutput = true;
-        float confidenceThreshold = 0.5f;
+        int modelQuality;  // 1-5, higher = better quality
+        bool useTwoPass;
+        bool normalizeOutput;
+        float confidenceThreshold;
+        
+        ProcessingOptions() 
+            : modelQuality(3)
+            , useTwoPass(true)
+            , normalizeOutput(true)
+            , confidenceThreshold(0.5f)
+        {}
     };
 
     StemSeparationService();

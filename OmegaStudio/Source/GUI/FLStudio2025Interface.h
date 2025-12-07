@@ -35,6 +35,12 @@ public:
     std::function<void()> onPatternMode;
     std::function<void()> onSongMode;
     
+    // AI callbacks
+    std::function<void()> onAISeparate;
+    std::function<void()> onAILoop;
+    std::function<void()> onAIChord;
+    std::function<void()> onAIGopher;
+    
 private:
     // Logo
     std::unique_ptr<juce::Label> logoLabel_;
@@ -75,6 +81,12 @@ private:
     std::unique_ptr<juce::TextButton> metronomeButton_;
     std::unique_ptr<juce::TextButton> blendButton_;
     std::unique_ptr<juce::TextButton> typingKeyboardButton_;
+    
+    // AI BUTTONS (NEW!)
+    std::unique_ptr<juce::TextButton> aiSeparateButton_;
+    std::unique_ptr<juce::TextButton> aiLoopButton_;
+    std::unique_ptr<juce::TextButton> aiChordButton_;
+    std::unique_ptr<juce::TextButton> aiGopherButton_;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FLStudio2025Toolbar)
 };
@@ -167,27 +179,34 @@ private:
 };
 
 //==============================================================================
-// FL STUDIO 2025 - HELP PANEL (Panel de ayuda derecho)
+// FL STUDIO 2025 - GOPHER AI CHAT (Panel de IA derecho)
 //==============================================================================
-class FLStudio2025HelpPanel : public juce::Component {
+class FLStudio2025GopherAIChat : public juce::Component {
 public:
-    FLStudio2025HelpPanel();
-    ~FLStudio2025HelpPanel() override = default;
+    FLStudio2025GopherAIChat();
+    ~FLStudio2025GopherAIChat() override = default;
     
     void paint(juce::Graphics& g) override;
     void resized() override;
     
-    void setHelpText(const juce::String& title, const juce::StringArray& steps);
+    void addMessage(const juce::String& sender, const juce::String& message, juce::Colour senderColor);
+    void processCommand(const juce::String& command);
+    
+    // Callbacks for AI commands
+    std::function<void()> onSeparateStems;
+    std::function<void(const juce::String&)> onGenerateLoop;
+    std::function<void()> onGenerateChord;
+    std::function<void(const juce::String&)> onAskGopher;
     
 private:
     std::unique_ptr<juce::Label> titleLabel_;
-    std::unique_ptr<juce::TextEditor> contentEditor_;
-    std::unique_ptr<juce::Viewport> viewport_;
+    std::unique_ptr<juce::TextEditor> chatDisplay_;
+    std::unique_ptr<juce::TextEditor> inputField_;
+    std::unique_ptr<juce::TextButton> sendButton_;
     
-    juce::String currentTitle_;
-    juce::StringArray currentSteps_;
+    void sendMessage();
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FLStudio2025HelpPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FLStudio2025GopherAIChat)
 };
 
 //==============================================================================
@@ -249,8 +268,8 @@ private:
     std::unique_ptr<FLStudio2025Toolbar> toolbar_;
     std::unique_ptr<FLStudio2025PatternPanel> patternPanel_;
     std::unique_ptr<FLStudio2025PlaylistView> playlistView_;
-    std::unique_ptr<FLStudio2025HelpPanel> helpPanel_;
-    std::unique_ptr<FLStudio2025ChannelRack> channelRack_;  // NEW!
+    std::unique_ptr<FLStudio2025GopherAIChat> gopherChat_;  // AI ASSISTANT!
+    std::unique_ptr<FLStudio2025ChannelRack> channelRack_;
     
     // Resizer bars
     std::unique_ptr<juce::ResizableEdgeComponent> leftResizer_;

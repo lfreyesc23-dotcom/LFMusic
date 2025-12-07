@@ -185,6 +185,12 @@ target_sources(OmegaStudio PRIVATE
     Source/Audio/AI/AIFeatures.cpp
     Source/Audio/AI/OnnxRuntimeWrapper.h
     Source/Audio/AI/OnnxRuntimeWrapper.cpp
+    
+    # NEW FL STUDIO 2025 AI SERVICES (CPP only)
+    Source/AI/StemSeparationService.cpp
+    Source/AI/LoopStarter.cpp
+    Source/AI/ChordGenerator.cpp
+    Source/AI/GopherAssistant.cpp
 
     # Workflow integrations
     Source/Workflow/LoopStarterIntegration.h

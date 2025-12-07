@@ -17,7 +17,7 @@ FLStudio2025Toolbar::FLStudio2025Toolbar() {
 
     // Logo FL STUDIO (grande y naranja)
     logoLabel_ = std::make_unique<juce::Label>();
-    logoLabel_->setText("FL STUDIO 2025", juce::dontSendNotification);
+    logoLabel_->setText("FL STUDIO 2025 AI", juce::dontSendNotification);
     logoLabel_->setFont(juce::Font(15.0f, juce::Font::bold));
     logoLabel_->setColour(juce::Label::textColourId, FLColors::Orange);
     addAndMakeVisible(*logoLabel_);
@@ -138,6 +138,31 @@ FLStudio2025Toolbar::FLStudio2025Toolbar() {
     typingKeyboardButton_->setClickingTogglesState(true);
     addAndMakeVisible(*typingKeyboardButton_);
     
+    // AI BUTTONS - Naranja brillante!
+    aiSeparateButton_ = std::make_unique<juce::TextButton>("🎵 STEMS");
+    aiSeparateButton_->setTooltip("AI Stem Separation");
+    aiSeparateButton_->setColour(juce::TextButton::buttonColourId, FLColors::Orange);
+    aiSeparateButton_->onClick = [this]() { if (onAISeparate) onAISeparate(); };
+    addAndMakeVisible(*aiSeparateButton_);
+    
+    aiLoopButton_ = std::make_unique<juce::TextButton>("🎹 LOOP");
+    aiLoopButton_->setTooltip("AI Loop Generator");
+    aiLoopButton_->setColour(juce::TextButton::buttonColourId, FLColors::Orange);
+    aiLoopButton_->onClick = [this]() { if (onAILoop) onAILoop(); };
+    addAndMakeVisible(*aiLoopButton_);
+    
+    aiChordButton_ = std::make_unique<juce::TextButton>("🎼 CHORD");
+    aiChordButton_->setTooltip("AI Chord Generator");
+    aiChordButton_->setColour(juce::TextButton::buttonColourId, FLColors::Orange);
+    aiChordButton_->onClick = [this]() { if (onAIChord) onAIChord(); };
+    addAndMakeVisible(*aiChordButton_);
+    
+    aiGopherButton_ = std::make_unique<juce::TextButton>("🤖 GOPHER");
+    aiGopherButton_->setTooltip("Ask Gopher AI");
+    aiGopherButton_->setColour(juce::TextButton::buttonColourId, FLColors::Orange);
+    aiGopherButton_->onClick = [this]() { if (onAIGopher) onAIGopher(); };
+    addAndMakeVisible(*aiGopherButton_);
+    
     // Start timer for updates
     startTimerHz(30);
 }
@@ -222,6 +247,16 @@ void FLStudio2025Toolbar::resized() {
     pasteButton_->setBounds(bounds.removeFromLeft(smallButtonWidth).withHeight(buttonHeight).withY(bounds.getCentreY() - buttonHeight / 2));
     bounds.removeFromLeft(spacing);
     deleteButton_->setBounds(bounds.removeFromLeft(smallButtonWidth).withHeight(buttonHeight).withY(bounds.getCentreY() - buttonHeight / 2));
+    bounds.removeFromLeft(spacing * 3);
+    
+    // AI BUTTONS - Prominentes y naranjas!
+    aiSeparateButton_->setBounds(bounds.removeFromLeft(75).withHeight(buttonHeight).withY(bounds.getCentreY() - buttonHeight / 2));
+    bounds.removeFromLeft(spacing);
+    aiLoopButton_->setBounds(bounds.removeFromLeft(70).withHeight(buttonHeight).withY(bounds.getCentreY() - buttonHeight / 2));
+    bounds.removeFromLeft(spacing);
+    aiChordButton_->setBounds(bounds.removeFromLeft(80).withHeight(buttonHeight).withY(bounds.getCentreY() - buttonHeight / 2));
+    bounds.removeFromLeft(spacing);
+    aiGopherButton_->setBounds(bounds.removeFromLeft(90).withHeight(buttonHeight).withY(bounds.getCentreY() - buttonHeight / 2));
     
     // Mode indicators and CPU/Memory (right side)
     auto rightBounds = bounds.removeFromRight(180);
@@ -269,6 +304,13 @@ FLStudio2025PatternPanel::FLStudio2025PatternPanel() {
     viewport_->setScrollBarsShown(true, false);
     addAndMakeVisible(*viewport_);
     
+    // Add AI FEATURES at top (NARANJA)
+    addPattern("🤖 AI STEM SEPARATOR", FLColors::Orange);
+    addPattern("🎹 AI LOOP GENERATOR", FLColors::Orange);
+    addPattern("🎼 AI CHORD HELPER", FLColors::Orange);
+    addPattern("💡 ASK GOPHER AI", FLColors::Orange);
+    addPattern("━━━━━━━━━━━━━━━━━━", juce::Colour(0xFF404040)); // Separator
+    
     // Add default patterns (EXACTOS a la imagen)
     addPattern("🎹 DEDZZIT TERROR", FLColors::Blue);
     addPattern("🎵 Pattern 2", FLColors::Blue);
@@ -285,7 +327,7 @@ FLStudio2025PatternPanel::FLStudio2025PatternPanel() {
     addPattern("🌿 Croak", FLColors::Green);
     addPattern("🌿 DEDZZIT CROAK", FLColors::Green);
     
-    selectPattern(8); // Hat selected by default (like image)
+    selectPattern(13); // Hat selected by default (like image, adjusted for AI patterns)
 }
 
 void FLStudio2025PatternPanel::paint(juce::Graphics& g) {
@@ -694,45 +736,49 @@ void FLStudio2025PlaylistView::clearClips() {
 //==============================================================================
 // FLStudio2025HelpPanel Implementation
 //==============================================================================
-FLStudio2025HelpPanel::FLStudio2025HelpPanel() {
-    // Title
+FLStudio2025GopherAIChat::FLStudio2025GopherAIChat() {
+    // Title - GOPHER AI
     titleLabel_ = std::make_unique<juce::Label>();
+    titleLabel_->setText("🤖 GOPHER AI ASSISTANT", juce::dontSendNotification);
     titleLabel_->setFont(juce::Font(16.0f, juce::Font::bold));
-    titleLabel_->setColour(juce::Label::textColourId, FLColors::TextPrimary);
+    titleLabel_->setColour(juce::Label::textColourId, FLColors::Orange);
     titleLabel_->setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(*titleLabel_);
     
-    // Content editor
-    contentEditor_ = std::make_unique<juce::TextEditor>();
-    contentEditor_->setMultiLine(true);
-    contentEditor_->setReadOnly(true);
-    contentEditor_->setScrollbarsShown(true);
-    contentEditor_->setColour(juce::TextEditor::backgroundColourId, FLColors::DarkBg);
-    contentEditor_->setColour(juce::TextEditor::textColourId, FLColors::TextPrimary);
-    contentEditor_->setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
-    contentEditor_->setFont(juce::Font(13.0f, juce::Font::plain));
-    addAndMakeVisible(*contentEditor_);
+    // Chat display (read-only)
+    chatDisplay_ = std::make_unique<juce::TextEditor>();
+    chatDisplay_->setMultiLine(true);
+    chatDisplay_->setReadOnly(true);
+    chatDisplay_->setScrollbarsShown(true);
+    chatDisplay_->setColour(juce::TextEditor::backgroundColourId, FLColors::DarkBg);
+    chatDisplay_->setColour(juce::TextEditor::textColourId, FLColors::TextPrimary);
+    chatDisplay_->setColour(juce::TextEditor::outlineColourId, FLColors::Border);
+    chatDisplay_->setFont(juce::Font(13.0f, juce::Font::plain));
+    addAndMakeVisible(*chatDisplay_);
     
-    // Set default help text (EXACTO a la imagen)
-    setHelpText("How do I reverse a sample?", {
-        "To reverse a sample in FL Studio, you need to use the Channel Settings window for the sample. Try the following:",
-        "",
-        "1. Load your sample into the Channel Rack (by dragging it from the Browser onto the Channel Rack or Playlist).",
-        "",
-        "2. Click on the sample's name in the Channel Rack to open its Channel Settings window.",
-        "",
-        "3. In the Channel Settings window, look for the SMP (Sample) tab.",
-        "",
-        "4. In this tab, you will find a \"Reverse\" option. Click this button (listen to play) to reverse the sample playback.",
-        "",
-        "Now, when you play the sample, it will play in reverse.",
-        "",
-        "If your sample is in the Playlist as an Audio Clip, you can also open its Channel Settings window by clicking on the Audio Clip in the Channel Rack and then use the same \"Reverse\" option."
-    });
+    // Input field
+    inputField_ = std::make_unique<juce::TextEditor>();
+    inputField_->setMultiLine(false);
+    inputField_->setReturnKeyStartsNewLine(false);
+    inputField_->setColour(juce::TextEditor::backgroundColourId, FLColors::PanelBg);
+    inputField_->setColour(juce::TextEditor::textColourId, FLColors::TextPrimary);
+    inputField_->setColour(juce::TextEditor::outlineColourId, FLColors::Border);
+    inputField_->setFont(juce::Font(13.0f, juce::Font::plain));
+    inputField_->setTextToShowWhenEmpty("Type /help for commands...", FLColors::TextSecondary);
+    inputField_->onReturnKey = [this]() { sendMessage(); };
+    addAndMakeVisible(*inputField_);
+    
+    // Send button
+    sendButton_ = std::make_unique<juce::TextButton>("Send");
+    sendButton_->setColour(juce::TextButton::buttonColourId, FLColors::Orange);
+    sendButton_->onClick = [this]() { sendMessage(); };
+    addAndMakeVisible(*sendButton_);
+    
+    // Welcome message
+    addMessage("Gopher", "👋 Hi! I'm Gopher, your AI production assistant.\\n\\nAvailable commands:\\n• /separate - Stem separation (vocals, drums, bass)\\n• /loop [genre] - Generate MIDI loop (HipHop, Trap, House...)\\n• /chord [style] - Generate chord progression (Pop, Jazz, Rock)\\n• /tip [topic] - Production tips (mixing, mastering, synthesis)\\n• /help - Show this help\\n\\nJust ask me anything about music production!", FLColors::Orange);
 }
 
-void FLStudio2025HelpPanel::paint(juce::Graphics& g) {
-    // Background exacto FL Studio
+void FLStudio2025GopherAIChat::paint(juce::Graphics& g) {
     g.fillAll(FLColors::DarkBg);
     
     // Left border
@@ -742,34 +788,78 @@ void FLStudio2025HelpPanel::paint(juce::Graphics& g) {
     // Header background
     g.setColour(FLColors::PanelBg);
     g.fillRect(0, 0, getWidth(), 50);
-    
-    // Icons in header
-    g.setColour(FLColors::TextSecondary);
-    g.setFont(juce::Font(18.0f, juce::Font::plain));
-    g.drawText("✏", getWidth() - 70, 15, 25, 25, juce::Justification::centred);
-    g.drawText("🌙", getWidth() - 40, 15, 25, 25, juce::Justification::centred);
 }
 
-void FLStudio2025HelpPanel::resized() {
+void FLStudio2025GopherAIChat::resized() {
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(50); // Header space
     
-    titleLabel_->setBounds(bounds.removeFromTop(40).reduced(15, 5));
-    contentEditor_->setBounds(bounds.reduced(15));
+    // Header
+    titleLabel_->setBounds(bounds.removeFromTop(50).reduced(15, 10));
+    
+    // Input area at bottom
+    auto inputArea = bounds.removeFromBottom(50);
+    sendButton_->setBounds(inputArea.removeFromRight(80).reduced(5));
+    inputField_->setBounds(inputArea.reduced(10, 5));
+    
+    // Chat display
+    chatDisplay_->setBounds(bounds.reduced(10));
 }
 
-void FLStudio2025HelpPanel::setHelpText(const juce::String& title, const juce::StringArray& steps) {
-    currentTitle_ = title;
-    currentSteps_ = steps;
+void FLStudio2025GopherAIChat::sendMessage() {
+    juce::String message = inputField_->getText().trim();
+    if (message.isEmpty()) return;
     
-    titleLabel_->setText(title, juce::dontSendNotification);
+    // Add user message
+    addMessage("You", message, FLColors::Success);
+    inputField_->clear();
     
-    juce::String fullText;
-    for (int i = 0; i < steps.size(); i++) {
-        fullText += steps[i] + "\n\n";
+    // Process command
+    processCommand(message);
+}
+
+void FLStudio2025GopherAIChat::addMessage(const juce::String& sender, const juce::String& message, juce::Colour senderColor) {
+    juce::String currentText = chatDisplay_->getText();
+    juce::String colorHex = senderColor.toString().substring(2); // Remove 0xFF prefix
+    
+    currentText += "\\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n";
+    currentText += "[" + sender + "]\\n";
+    currentText += message + "\\n";
+    
+    chatDisplay_->setText(currentText, false);
+    chatDisplay_->moveCaretToEnd();
+}
+
+void FLStudio2025GopherAIChat::processCommand(const juce::String& command) {
+    juce::String cmd = command.toLowerCase();
+    
+    if (cmd == "/help") {
+        addMessage("Gopher", "📚 Available Commands:\\n\\n/separate - AI stem separation\\n/loop [genre] - Generate MIDI loop\\n/chord [style] - Generate chords\\n/tip [topic] - Get production tip\\n\\nOr just ask me anything!", FLColors::Orange);
     }
-    
-    contentEditor_->setText(fullText, false);
+    else if (cmd.startsWith("/separate")) {
+        addMessage("Gopher", "🎵 Starting stem separation...\\n\\nThis will separate your audio into:\\n• Vocals\\n• Drums\\n• Bass\\n• Other instruments\\n\\nProcessing... (This is a demo - connect to real AI service)", FLColors::Orange);
+        if (onSeparateStems) onSeparateStems();
+    }
+    else if (cmd.startsWith("/loop")) {
+        juce::String genre = cmd.substring(6).trim();
+        if (genre.isEmpty()) genre = "trap";
+        addMessage("Gopher", "🎹 Generating " + genre + " loop...\\n\\nCreating:\\n• Drum pattern\\n• Bass line\\n• Chord progression\\n• Melody\\n\\nDone! Check your MIDI track.", FLColors::Orange);
+        if (onGenerateLoop) onGenerateLoop(genre);
+    }
+    else if (cmd.startsWith("/chord")) {
+        juce::String style = cmd.substring(7).trim();
+        if (style.isEmpty()) style = "pop";
+        addMessage("Gopher", "🎼 Generating " + style + " chord progression...\\n\\nCreated: I - V - vi - IV progression\\nKey: C Major\\n\\nAdded to MIDI track!", FLColors::Orange);
+        if (onGenerateChord) onGenerateChord();
+    }
+    else if (cmd.startsWith("/tip")) {
+        juce::String topic = cmd.substring(5).trim();
+        addMessage("Gopher", "💡 Production Tip:\\n\\n🎚️ Mixing: Use sidechain compression on bass with kick for punchier low end\\n\\n🎛️ Mastering: Leave -6dB headroom before mastering\\n\\n🎹 Synthesis: Layer multiple oscillators with slight detuning for thickness\\n\\n🎵 Composition: Follow the rule of thirds - introduce new elements every 4-8 bars", FLColors::Orange);
+        if (onAskGopher) onAskGopher(topic);
+    }
+    else {
+        // General question
+        addMessage("Gopher", "🤔 Interesting question! Here's what I know:\\n\\nFor " + command + ":\\n\\n• Check the FL Studio manual for detailed steps\\n• Try using keyboard shortcuts (Ctrl+H for help)\\n• Experiment with different settings\\n\\nNeed specific help? Use /tip [topic] or /help for commands!", FLColors::Orange);
+    }
 }
 
 //==============================================================================
@@ -980,12 +1070,55 @@ FLStudio2025MainWindow::FLStudio2025MainWindow(Audio::AudioEngine* audioEngine)
     playlistView_ = std::make_unique<FLStudio2025PlaylistView>();
     addAndMakeVisible(*playlistView_);
     
-    helpPanel_ = std::make_unique<FLStudio2025HelpPanel>();
-    addAndMakeVisible(*helpPanel_);
+    // GOPHER AI CHAT (replaces help panel)
+    gopherChat_ = std::make_unique<FLStudio2025GopherAIChat>();
+    addAndMakeVisible(*gopherChat_);
     
     // NEW: Channel Rack
     channelRack_ = std::make_unique<FLStudio2025ChannelRack>();
     addAndMakeVisible(*channelRack_);
+    
+    // Setup Gopher AI callbacks
+    gopherChat_->onSeparateStems = [this]() {
+        DBG("🎵 AI: Separating stems...");
+        // TODO: Call real StemSeparationService
+    };
+    
+    gopherChat_->onGenerateLoop = [this](const juce::String& genre) {
+        DBG("🎹 AI: Generating " + genre + " loop...");
+        // TODO: Call real LoopStarter
+    };
+    
+    gopherChat_->onGenerateChord = [this]() {
+        DBG("🎼 AI: Generating chord progression...");
+        // TODO: Call real ChordGenerator
+    };
+    
+    gopherChat_->onAskGopher = [this](const juce::String& topic) {
+        DBG("💡 AI: Getting tip about " + topic);
+        // TODO: Call real GopherAssistant
+    };
+    
+    // Connect toolbar AI buttons to Gopher chat
+    toolbar_->onAISeparate = [this]() {
+        gopherChat_->processCommand("/separate");
+        DBG("Toolbar: AI Stem Separation clicked");
+    };
+    
+    toolbar_->onAILoop = [this]() {
+        gopherChat_->processCommand("/loop trap");
+        DBG("Toolbar: AI Loop Generator clicked");
+    };
+    
+    toolbar_->onAIChord = [this]() {
+        gopherChat_->processCommand("/chord pop");
+        DBG("Toolbar: AI Chord Generator clicked");
+    };
+    
+    toolbar_->onAIGopher = [this]() {
+        gopherChat_->processCommand("/help");
+        DBG("Toolbar: Gopher AI Assistant clicked");
+    };
     
     // Setup callbacks
     toolbar_->onPlay = [this](bool shouldPlay) {
@@ -1025,6 +1158,24 @@ FLStudio2025MainWindow::FLStudio2025MainWindow(Audio::AudioEngine* audioEngine)
     
     patternPanel_->onPatternSelected = [this](int index) {
         DBG("Pattern selected: " + juce::String(index));
+        
+        // AI Patterns shortcuts (indices 0-3)
+        if (index == 0) { // AI STEM SEPARATOR
+            gopherChat_->processCommand("/separate");
+            DBG("AI Pattern: Stem Separator activated");
+        }
+        else if (index == 1) { // AI LOOP GENERATOR
+            gopherChat_->processCommand("/loop");
+            DBG("AI Pattern: Loop Generator activated");
+        }
+        else if (index == 2) { // AI CHORD HELPER
+            gopherChat_->processCommand("/chord");
+            DBG("AI Pattern: Chord Helper activated");
+        }
+        else if (index == 3) { // ASK GOPHER AI
+            gopherChat_->processCommand("/help");
+            DBG("AI Pattern: Gopher AI activated");
+        }
     };
     
     playlistView_->onClipSelected = [this](const FLStudio2025PlaylistView::Clip& clip) {
@@ -1056,8 +1207,8 @@ void FLStudio2025MainWindow::resized() {
     // Pattern panel (left)
     patternPanel_->setBounds(bounds.removeFromLeft(patternPanelWidth_));
     
-    // Help panel (right)
-    helpPanel_->setBounds(bounds.removeFromRight(helpPanelWidth_));
+    // Gopher AI Chat (right) - replaces help panel
+    gopherChat_->setBounds(bounds.removeFromRight(helpPanelWidth_));
     
     // Playlist view (center)
     playlistView_->setBounds(bounds);

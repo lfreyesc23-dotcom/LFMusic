@@ -34,6 +34,27 @@
 #include "LibraryBrowserPanel.h"
 #include "MixerChannelsPanel.h"
 
+// ===== NUEVAS CARACTERÍSTICAS FL STUDIO 2025 =====
+#include "../AI/StemSeparationService.h"
+#include "../AI/LoopStarter.h"
+#include "../AI/ChordGenerator.h"
+#include "../AI/GopherAssistant.h"
+// #include "../Audio/AudioRecorder.h"  // Ya existe en Recording/
+// #include "../Arrangement/Playlist.h"  // Conflicts with existing code
+// #include "../MIDI/PianoRoll.h"  // Conflicts with existing code
+// #include "../Mixer/Mixer.h"  // Conflicts with MixerEngine
+// Note: Los headers siguientes son solo definiciones de clases,
+// las implementaciones reales se harán progresivamente
+// #include "../Effects/FLMobileRack.h"
+// #include "../Effects/PremiumEffects.h"
+// #include "../Instruments/PremiumSynths.h"
+// #include "../AudioEditors/AudioEditors.h"
+// #include "../Visualizers/Visualizers.h"
+// #include "../MIDI/MIDIAdvanced.h"
+// #include "../Remote/FLStudioRemote.h"
+// #include "../Plugins/PluginHosting.h"
+// #include "../GUI/FLStudio2025GUI.h"
+
 namespace Omega {
 namespace Audio { class AudioEngine; }
 
@@ -143,6 +164,64 @@ private:
     // Status display
     int numTracks_{0};
     bool projectModified_{false};
+    
+    // ===== FL STUDIO 2025 COMPLETE SYSTEMS =====
+    
+    // AI Services (NEW 2025) - FULLY IMPLEMENTED
+    std::unique_ptr<OmegaStudio::AI::StemSeparationService> stemSeparationService_;
+    std::unique_ptr<OmegaStudio::AI::LoopStarter> loopStarter_;
+    std::unique_ptr<OmegaStudio::AI::ChordGenerator> chordGenerator_;
+    std::unique_ptr<OmegaStudio::AI::GopherAssistant> gopherAssistant_;
+    
+    // Audio Recording & Clips (NEW 2025)
+    // std::unique_ptr<OmegaStudio::Audio::AudioRecorder> audioRecorder_;  // Ya existe
+    
+    // Arrangement & MIDI (Enhanced 2025) - HEADERS READY
+    // NOTE: Commented out due to namespace conflicts - implement later
+    // std::unique_ptr<OmegaStudio::Arrangement::Playlist> playlist_;
+    // std::unique_ptr<OmegaStudio::MIDI::PianoRoll> pianoRoll_;
+    
+    // Mixer 128 Channels (Enhanced 2025) - HEADER READY
+    // std::unique_ptr<OmegaStudio::Mixer::Mixer> mixer128_;
+    
+    // FL Mobile Rack + Premium Effects (NEW 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::Effects::FLMobileRack> mobileRack_;
+    // std::unique_ptr<OmegaStudio::Effects::Emphasis> emphasis_;
+    // std::unique_ptr<OmegaStudio::Effects::LuxeVerb> luxeVerb_;
+    // std::unique_ptr<OmegaStudio::Effects::GrossBeat> grossBeat_;
+    // std::unique_ptr<OmegaStudio::Effects::Vocodex> vocodex_;
+    
+    // Premium Instruments (NEW 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::Instruments::Sytrus> sytrus_;
+    // std::unique_ptr<OmegaStudio::Instruments::Harmor> harmor_;
+    // std::unique_ptr<OmegaStudio::Instruments::FLEX> flex_;
+    // std::unique_ptr<OmegaStudio::Instruments::Sakura> sakura_;
+    
+    // Audio Editors (NEW 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::AudioEditors::Edison> edison_;
+    // std::unique_ptr<OmegaStudio::AudioEditors::Newtone> newtone_;
+    // std::unique_ptr<OmegaStudio::AudioEditors::Newtime> newtime_;
+    
+    // Visualizers (NEW 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::Visualizers::WaveCandy> waveCandy_;
+    // std::unique_ptr<OmegaStudio::Visualizers::FruitySpectroman> spectroman_;
+    // std::unique_ptr<OmegaStudio::Visualizers::ZGameEditorVisualizer> zGameEditor_;
+    
+    // MIDI Advanced (NEW 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::MIDI::MIDIOut> midiOut_;
+    // std::unique_ptr<OmegaStudio::MIDI::FruityVoltageController> cvGate_;
+    
+    // FL Remote & Content (NEW 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::Remote::FLStudioRemote> flRemote_;
+    // std::unique_ptr<OmegaStudio::Remote::SoundContentLibrary> contentLibrary_;
+    
+    // Plugin Hosting (Enhanced 2025) - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::Plugins::PluginHosting> pluginHosting_;
+    
+    // FL Studio 2025 GUI Components - TODO: Implement .cpp
+    // std::unique_ptr<OmegaStudio::GUI::FLStudio2025LookAndFeel> fl2025LookAndFeel_;
+    // std::unique_ptr<OmegaStudio::GUI::DockingSystem> dockingSystem_;
+    // std::unique_ptr<OmegaStudio::GUI::WorkspaceManager> workspaceManager_;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

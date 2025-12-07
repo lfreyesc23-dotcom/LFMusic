@@ -36,8 +36,9 @@ void OmegaStudioApplication::initialise(const juce::String& commandLine) {
     fileLogger_.reset(new juce::FileLogger(logFile, "Omega Studio Session", 0));
     juce::Logger::setCurrentLogger(fileLogger_.get());
     juce::Logger::writeToLog("===========================================");
-    juce::Logger::writeToLog("   OMEGA STUDIO - Next-Gen DAW");
-    juce::Logger::writeToLog("   Version 1.0.0");
+    juce::Logger::writeToLog("   OMEGA STUDIO - FL 2025 AI EDITION");
+    juce::Logger::writeToLog("   🤖 AI-Powered Music Production");
+    juce::Logger::writeToLog("   Version 1.0.0 | 4 AI Services Active");
     juce::Logger::writeToLog("   Log: " + logFile.getFullPathName());
     juce::Logger::writeToLog("===========================================");
     

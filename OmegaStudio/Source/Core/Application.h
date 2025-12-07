@@ -24,8 +24,8 @@ public:
     //==========================================================================
     // JUCEApplication Interface
     //==========================================================================
-    const juce::String getApplicationName() override { return "Omega Studio"; }
-    const juce::String getApplicationVersion() override { return "1.0.0"; }
+    const juce::String getApplicationName() override { return "OMEGA STUDIO - FL 2025 AI EDITION"; }
+    const juce::String getApplicationVersion() override { return "1.0.0 - AI Powered"; }
     bool moreThanOneInstanceAllowed() override { return false; }
     
     //==========================================================================
