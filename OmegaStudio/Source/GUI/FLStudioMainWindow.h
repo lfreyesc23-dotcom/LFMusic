@@ -10,6 +10,15 @@
 #include "ChannelRackUI.h"
 #include "../Sequencer/ChannelRack.h"
 
+// Forward declarations
+namespace Omega {
+    namespace Audio { class AudioEngine; }
+}
+
+namespace OmegaStudio {
+    namespace Audio { class AudioEngine; }
+}
+
 namespace Omega {
 namespace GUI {
 
@@ -169,6 +178,9 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
     
+    // Audio Engine integration
+    void setAudioEngine(Omega::Audio::AudioEngine* engine) { audioEngine_ = engine; }
+    
     // Cambiar entre vistas
     void showChannelRack();
     void showPlaylist();
@@ -191,6 +203,7 @@ private:
     std::unique_ptr<FLRecordingPanel> recordingPanel_;
     
     // Backend engines
+    Omega::Audio::AudioEngine* audioEngine_ = nullptr;
     std::unique_ptr<OmegaStudio::Sequencer::ChannelRackEngine> channelRackEngine_;
     
     // Current view

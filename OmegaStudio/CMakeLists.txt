@@ -124,7 +124,6 @@ target_sources(OmegaStudio PRIVATE
     # Core Application
     Source/Core/Main.cpp
     Source/Core/Application.h
-    Source/Core/Application.cpp
     
     # Audio Engine
     Source/Audio/Engine/AudioEngine.h
